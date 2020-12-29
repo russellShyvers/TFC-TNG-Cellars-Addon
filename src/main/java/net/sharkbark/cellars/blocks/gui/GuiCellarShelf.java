@@ -40,7 +40,7 @@ import net.dries007.tfc.network.PacketGuiButton;
 
 public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
 
-    public static final ResourceLocation CELLAR_SHELF_BACKGROUND = new ResourceLocation(Reference.MOD_ID, "textures/gui/cellar_shelf.png");
+    public static final ResourceLocation CELLAR_SHELF_BACKGROUND = new ResourceLocation(Reference.MOD_ID, ":textures/gui/cellar_shelf.png");
     private final String translationKey;
     private static TECellarShelf TE;
     private final InventoryPlayer playerInventory;
@@ -54,22 +54,18 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
     }
 
     @Override
-    public void initGui()
-    {
-        super.initGui();
-    }
-
-    @Override
     public void onGuiClosed() {
         TE.isOpen -= 1;
         super.onGuiClosed();
     }
 
+    /*
     @Override
     protected void renderHoveredToolTip(int mouseX, int mouseY)
     {
         super.renderHoveredToolTip(mouseX, mouseY);
     }
+     */
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
