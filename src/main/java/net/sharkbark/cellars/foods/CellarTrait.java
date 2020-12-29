@@ -9,16 +9,9 @@ import javax.annotation.Nonnull;
 
 public class CellarTrait extends FoodTrait {
 
-    public static final CellarTrait COOL;
-    public static final CellarTrait ICY;
-    public static final CellarTrait FREEZING;
-
-    static
-    {
-        COOL = new CellarTrait("ceCool", ModConfig.coolMod); //Lower then outside temp
-        ICY = new CellarTrait("icy", ModConfig.icyMod);   //Considerably lower then outside temp
-        FREEZING = new CellarTrait("icle", ModConfig.icleMod);   //SubZero
-    }
+    public static final CellarTrait COOL = new CellarTrait("ceCool", ModConfig.coolMod);
+    public static final CellarTrait ICY = new CellarTrait("icy", ModConfig.icyMod);
+    public static final CellarTrait FREEZING = new CellarTrait("icy", ModConfig.icyMod);
 
     public CellarTrait(@Nonnull String name, float decayModifier) {
         super(name, decayModifier, false);
