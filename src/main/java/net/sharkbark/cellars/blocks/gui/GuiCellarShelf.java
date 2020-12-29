@@ -82,7 +82,9 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        GlStateManager.color(1.0f,1.0f,1.0f,1.0f);
+        this.mc.getTextureManager().bindTexture(CELLAR_SHELF_BACKGROUND);
+        this.drawTexturedModalRect(this.guiLeft,this.guiTop, 0, 0, this.xSize, this.ySize);
 
         if(mouseX >= guiLeft + 5 && mouseX <= guiLeft + 15 && mouseY >= guiTop + 5 && mouseY <= guiTop + 15) {
             List<String> infoText = new ArrayList<String>();
