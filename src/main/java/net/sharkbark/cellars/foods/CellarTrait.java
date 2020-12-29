@@ -21,7 +21,8 @@ public class CellarTrait extends FoodTrait {
     }
 
     public CellarTrait(@Nonnull String name, float decayModifier) {
-        super(name, decayModifier, true);
+        super(name, decayModifier, false);
+
         //FoodTrait.getTraits().put(name, this);
         //def >> (ItemStack stack) = CapabilityFood.applyTrait(stack, this);
         //def << (ItemStack stack) = CapabilityFood.removeTrait(stack, this);
