@@ -16,8 +16,8 @@ public class CellarTrait extends FoodTrait {
     static
     {
         COOL = new CellarTrait("ceCool", ModConfig.coolMod); //Lower then outside temp
-        ICY = new CellarTrait("Icy", ModConfig.icyMod);   //Considerably lower then outside temp
-        FREEZING = new CellarTrait("Icle", ModConfig.icleMod);   //SubZero
+        ICY = new CellarTrait("icy", ModConfig.icyMod);   //Considerably lower then outside temp
+        FREEZING = new CellarTrait("icle", ModConfig.icleMod);   //SubZero
     }
 
     public CellarTrait(@Nonnull String name, float decayModifier) {
