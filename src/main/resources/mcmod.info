@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ce",
+  "name": "Cellars Addon",
+  "description": "A faithful recreation of the cellars mod for TFC by Sladki, for 1.12",
+  "version": "1.20",
+  "mcversion": "1.12",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["SharkBark"],
+  "credits": "The TFC:TNG Devs for all their help and guidance.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

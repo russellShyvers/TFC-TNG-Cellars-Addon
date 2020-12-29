@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+  [
+    "PPP",
+    "PWP",
+    "PPP"
+  ],
+
+  "key":
+  {
+    "P":
+    {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    },
+    "W":
+    {
+      "type": "forge:ore_dict",
+      "ore": "wool"
+    }
+  },
+
+  "result":
+  {
+    "item": "ce:cellar_wall",
+    "count": 8
+  }
+}

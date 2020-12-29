@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "normal": { "model": "ce:ruby_block" }
+  }
+}

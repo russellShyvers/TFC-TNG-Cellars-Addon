@@ -1,0 +1,18 @@
+item.cellar_door.name=Cellar Door
+
+tile.cellar_wall.name=Cellar Wall
+tile.cellar_shelf.name=Cellar Shelf
+tile.ice_bunker.name=Ice Bunker
+tile.cellar_door.name=Cellar Door
+
+container.ice_bunker=Ice Bunker
+container.cellar_shelf=Cellar Shelf
+
+block.cellar_door.name=Cellar Door
+block.cellar_wall.name=Cellar Wall
+
+itemGroup.ce=TFC Cellars
+
+tfc.food_traits.ceCool=Cooled
+tfc.food_traits.ceIcy=Icy
+tfc.food_traits.ceIcle=Frozen

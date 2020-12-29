@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+  [
+    "RRR",
+    "RSR",
+    "RRR"
+  ],
+
+  "key":
+  {
+    "R":
+    {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    },
+    "S":
+    {
+      "item": "minecraft:snow"
+    }
+  },
+
+  "result":
+  {
+    "item": "ce:ice_bunker",
+    "count": 1
+  }
+}

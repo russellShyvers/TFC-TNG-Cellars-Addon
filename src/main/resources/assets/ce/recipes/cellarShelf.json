@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+  [
+    "R R",
+    "RRR",
+    "R R"
+  ],
+
+  "key":
+  {
+    "R":
+    {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    }
+  },
+
+  "result":
+  {
+    "item": "ce:cellar_shelf",
+    "count": 1
+  }
+}
