@@ -35,7 +35,7 @@ public class GuiHandler implements IGuiHandler {
 
         if(ID == Reference.GUI_CELLAR_SHELF){
             TECellarShelf te = (TECellarShelf)world.getTileEntity(new BlockPos(x,y,z));
-            te.isOpen += 1;
+            //te.isOpen += 1;
             return new GuiCellarShelf(container ,entityPlayer.inventory, te, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
         }
         if(ID == Reference.GUI_ICE_BUNKER){
