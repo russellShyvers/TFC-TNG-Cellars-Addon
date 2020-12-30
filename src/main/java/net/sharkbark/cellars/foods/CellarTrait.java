@@ -9,23 +9,24 @@ import javax.annotation.Nonnull;
 
 public class CellarTrait extends FoodTrait {
 
-    public static final CellarTrait COOL = new CellarTrait("ceCool", ModConfig.coolMod);
-    public static final CellarTrait ICY = new CellarTrait("icy", ModConfig.icyMod);
-    public static final CellarTrait FREEZING = new CellarTrait("icy", ModConfig.icyMod);
+    public static final CellarTrait COOL = new CellarTrait("sharkCool", ModConfig.coolMod);
+    public static final CellarTrait ICY = new CellarTrait("sharkIcy", ModConfig.icyMod);
+    public static final CellarTrait FREEZING = new CellarTrait("sharkIcle", ModConfig.icyMod);
 
     public CellarTrait(@Nonnull String name, float decayModifier) {
-        super(name, decayModifier, false);
-
-        //FoodTrait.getTraits().put(name, this);
-        //def >> (ItemStack stack) = CapabilityFood.applyTrait(stack, this);
-        //def << (ItemStack stack) = CapabilityFood.removeTrait(stack, this);
+        super(name, decayModifier);
     }
 
-    public static void applyTrait(ItemStack stack, CellarTrait trait){
+    public CellarTrait(@Nonnull String name, float decayModifier, boolean hasTooltip) {
+        super(name, decayModifier, hasTooltip);
+    }
+
+    public static void applyTrait(ItemStack stack, FoodTrait trait){
         CapabilityFood.applyTrait(stack, trait);
     }
 
-    public static void removeTrait(ItemStack stack, CellarTrait trait){
+    public static void removeTrait(ItemStack stack, FoodTrait trait){
+
         CapabilityFood.removeTrait(stack, trait);
     }
 
