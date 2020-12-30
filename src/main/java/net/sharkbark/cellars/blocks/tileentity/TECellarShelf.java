@@ -1,8 +1,6 @@
 package net.sharkbark.cellars.blocks.tileentity;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
-import net.dries007.tfc.api.capability.food.FoodTrait;
-import net.dries007.tfc.api.capability.food.IFood;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -10,40 +8,22 @@ import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.objects.te.TEInventory;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
-import net.sharkbark.cellars.ModConfig;
-import net.sharkbark.cellars.blocks.container.ContainerCellarShelf;
-import net.sharkbark.cellars.foods.CellarTrait;
 import net.sharkbark.cellars.util.Reference;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallback, ITickable {
@@ -110,27 +90,27 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     private void updateTraits() {
         if (temperature > 20 || temperature == -1000) {
             for (int x = 0; x < 14; x++) {
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.COOL);
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.FREEZING);
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.ICY);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.COOL);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.FREEZING);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.ICY);
             }
         } else if (temperature <= 20 && temperature > 5) {
             for (int x = 0; x < 14; x++) {
-                CellarTrait.applyTrait(inventory.getStackInSlot(x), CellarTrait.COOL);
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.ICY);
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.FREEZING);
+                CapabilityFood.applyTrait(inventory.getStackInSlot(x), Reference.COOL);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.ICY);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.FREEZING);
             }
         } else if (temperature <= 5 && temperature > 0) {
             for (int x = 0; x < 14; x++) {
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.COOL);
-                CellarTrait.applyTrait(inventory.getStackInSlot(x), CellarTrait.ICY);
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.FREEZING);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.COOL);
+                CapabilityFood.applyTrait(inventory.getStackInSlot(x), Reference.ICY);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.FREEZING);
             }
         } else if (temperature <= 0) {
             for (int x = 0; x < 14; x++) {
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.COOL);
-                CellarTrait.removeTrait(inventory.getStackInSlot(x), CellarTrait.ICY);
-                CellarTrait.applyTrait(inventory.getStackInSlot(x), CellarTrait.FREEZING);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.COOL);
+                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.ICY);
+                CapabilityFood.applyTrait(inventory.getStackInSlot(x), Reference.FREEZING);
             }
         }
 
@@ -179,9 +159,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         for(int i = 0; i < 14; ++i) {
             System.out.println("SLOT " + i);
             ItemStack stack = inventory.getStackInSlot(i);
-            CellarTrait.removeTrait(stack, CellarTrait.COOL);
-            CellarTrait.removeTrait(stack, CellarTrait.FREEZING);
-            CellarTrait.removeTrait(stack, CellarTrait.ICY);
+            CapabilityFood.removeTrait(stack, Reference.COOL);
+            CapabilityFood.removeTrait(stack, Reference.FREEZING);
+            CapabilityFood.removeTrait(stack, Reference.ICY);
             InventoryHelper.spawnItemStack(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), stack);
         }
     }
@@ -235,9 +215,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             ItemStack stack = super.extractItem(slot, amount, simulate);
-            CapabilityFood.removeTrait(stack, CellarTrait.COOL);
-            CapabilityFood.removeTrait(stack, CellarTrait.ICY);
-            CapabilityFood.removeTrait(stack, CellarTrait.FREEZING);
+            CapabilityFood.removeTrait(stack, Reference.COOL);
+            CapabilityFood.removeTrait(stack, Reference.ICY);
+            CapabilityFood.removeTrait(stack, Reference.FREEZING);
             return stack;
         }
 
