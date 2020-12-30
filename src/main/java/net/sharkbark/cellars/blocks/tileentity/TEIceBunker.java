@@ -74,8 +74,9 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             player.sendMessage(new TextComponentString("Check console for more information"));
             player.sendMessage(new TextComponentString("The current error number is: " + error));
             player.sendMessage(new TextComponentString("Is the cellar complete: " + isComplete));
+            System.out.println("HELLO WORLD");
             //updateCellar(true);
-            //return;
+            return;
         }
 
         if(isComplete) {
@@ -95,7 +96,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
 
     @Override
     public void update() {
-        if(world.isRemote || !ModConfig.enable) {
+        if(world.isRemote) {
             return;
         }
 
@@ -121,10 +122,10 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             }
             avgYearTemp = avgYearTemp * 0.015f;    //Magic! (divide by 12 (average) * 0.18)
         }
-        temperature = avgYearTemp; //Don't update global in case of !isComplete
+        temperature = avgYearTemp;
 
-        if(checkCompliance || (ModConfig.fastComplete && !isComplete)  || (ModConfig.fastComplete && temperature == -1000)) {
-            isComplete = isStructureComplete();
+        if(checkCompliance) {
+            this.isComplete = isStructureComplete();
         }
 
         if(isComplete) {
@@ -461,6 +462,8 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
 
         lastUpdate = tagCompound.getInteger("LastUpdate");
         coolantAmount = tagCompound.getInteger("CoolantAmount");
+        error = tagCompound.getByte("ErrorCode");
+        isComplete = tagCompound.getBoolean("isCompliant");
     }
 
     @Override
@@ -473,6 +476,8 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
 
         tagCompound.setInteger("LastUpdate", lastUpdate);
         tagCompound.setInteger("CoolantAmount", coolantAmount);
+        tagCompound.setByte("ErrorCode", error);
+        tagCompound.setBoolean("isCompliant", isComplete);
 
         return tagCompound;
     }

@@ -78,7 +78,7 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
             List<String> infoText = new ArrayList<String>();
             float temperature = TE.getTemperature();
 
-            if(temperature == -1000) {
+            if(temperature <= -1000) {
                 infoText.add("[!] The shelf is not inside a cellar");
             } else {
                 if(temperature < 0) {

@@ -1,6 +1,7 @@
 package net.sharkbark.cellars.blocks.tileentity;
 
 import net.dries007.tfc.api.capability.food.CapabilityFood;
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.dries007.tfc.api.capability.size.CapabilityItemSize;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
@@ -19,11 +20,13 @@ import net.minecraft.util.math.BlockPos;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.sharkbark.cellars.util.Reference;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallback, ITickable {
@@ -87,34 +90,68 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         }
     }
 
-    private void updateTraits() {
-        if (temperature > 20 || temperature == -1000) {
-            for (int x = 0; x < 14; x++) {
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.COOL);
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.FREEZING);
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.ICY);
-            }
-        } else if (temperature <= 20 && temperature > 5) {
-            for (int x = 0; x < 14; x++) {
-                CapabilityFood.applyTrait(inventory.getStackInSlot(x), Reference.COOL);
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.ICY);
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.FREEZING);
-            }
-        } else if (temperature <= 5 && temperature > 0) {
-            for (int x = 0; x < 14; x++) {
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.COOL);
-                CapabilityFood.applyTrait(inventory.getStackInSlot(x), Reference.ICY);
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.FREEZING);
-            }
-        } else if (temperature <= 0) {
-            for (int x = 0; x < 14; x++) {
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.COOL);
-                CapabilityFood.removeTrait(inventory.getStackInSlot(x), Reference.ICY);
-                CapabilityFood.applyTrait(inventory.getStackInSlot(x), Reference.FREEZING);
-            }
+    private String getTrait(ItemStack stack, NBTTagCompound nbt){
+        String string = nbt.getString("CellarAddonTemperature");
+        if(string == "cool"){
+            return "cool";
+        }else if(string == "icy"){
+            return "icy";
+        }else if(string == "freezing"){
+            return "freezing";
+        }
+        return "";
+    }
+
+    private void removeTrait(ItemStack stack){
+        NBTTagCompound nbt;
+        if(stack.hasTagCompound()){
+            nbt = stack.getTagCompound();
+        }else{
+            nbt = new NBTTagCompound();
         }
 
+        String string = nbt.getString("CellarAddonTemperature");
+        if(string == "cool"){
+            CapabilityFood.removeTrait(stack, Reference.COOL);
+        }else if(string == "icy"){
+            CapabilityFood.removeTrait(stack, Reference.ICY);
+        }else if(string == "freezing"){
+            CapabilityFood.removeTrait(stack, Reference.FREEZING);
+        }
+        stack.setTagCompound(nbt);
+    }
 
+    private void applyTrait(ItemStack stack, NBTTagCompound nbt, String string, FoodTrait trait){
+        nbt.setString("CellarAddonTemperature", "cool");
+        CapabilityFood.applyTrait(stack, trait);
+        stack.setTagCompound(nbt);
+    }
+
+    private void updateTraits() {
+        for (int x = 0; x < inventory.getSlots(); x++) {
+            ItemStack stack = inventory.getStackInSlot(x);
+            NBTTagCompound nbt;
+            if(stack.hasTagCompound()){
+                nbt = stack.getTagCompound();
+            }else{
+                nbt = new NBTTagCompound();
+            }
+
+            String string = getTrait(stack, nbt);
+
+            if (temperature > 20 || temperature <= -1000) {
+                removeTrait(stack);
+            } else if (temperature <= 0 && string != "freezing") {
+                removeTrait(stack);
+                applyTrait(stack, nbt, string, Reference.FREEZING);
+            } else if (temperature <= 5 && string != "icy") {
+                removeTrait(stack);
+                applyTrait(stack, nbt, string, Reference.ICY);
+            } else if (temperature <= 20 && string != "cool" ) {
+                removeTrait(stack);
+                applyTrait(stack, nbt, string, Reference.COOL);
+            }
+        }
     }
 
     public void updateShelf(float temp) {
@@ -159,9 +196,7 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         for(int i = 0; i < 14; ++i) {
             System.out.println("SLOT " + i);
             ItemStack stack = inventory.getStackInSlot(i);
-            CapabilityFood.removeTrait(stack, Reference.COOL);
-            CapabilityFood.removeTrait(stack, Reference.FREEZING);
-            CapabilityFood.removeTrait(stack, Reference.ICY);
+            removeTrait(stack);
             InventoryHelper.spawnItemStack(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), stack);
         }
     }
@@ -215,9 +250,27 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             ItemStack stack = super.extractItem(slot, amount, simulate);
-            CapabilityFood.removeTrait(stack, Reference.COOL);
-            CapabilityFood.removeTrait(stack, Reference.ICY);
-            CapabilityFood.removeTrait(stack, Reference.FREEZING);
+
+            NBTTagCompound nbt;
+            if(stack.hasTagCompound()){
+                nbt = stack.getTagCompound();
+            }else{
+                nbt = new NBTTagCompound();
+            }
+
+            String string = nbt.getString("CellarAddonTemperature");
+            if(string == "cool"){
+                nbt.removeTag("cool");
+                CapabilityFood.removeTrait(stack, Reference.COOL);
+            }else if(string == "icy"){
+                nbt.removeTag("icy");
+                CapabilityFood.removeTrait(stack, Reference.ICY);
+            }else if(string == "freezing"){
+                nbt.removeTag("freezing");
+                CapabilityFood.removeTrait(stack, Reference.FREEZING);
+            }
+
+            stack.setTagCompound(nbt);
             return stack;
         }
 
