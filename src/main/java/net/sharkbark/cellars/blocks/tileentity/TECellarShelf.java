@@ -52,21 +52,15 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     public float temperature = -1;
     //public int isOpen = 0;
     private int updateTickCounter = 120;
-    private boolean worldLoaded = false;
 
 
     public TECellarShelf() {
         super(new CellarShelfItemStackHandler(14));
     }
 
-
-    @SubscribeEvent
-    public void loaded(WorldEvent.Load worldEvent){
-        worldLoaded = true;
-    }
     @Override
     public void update() {
-        if(world.isRemote || worldLoaded == false) {
+        if(world.isRemote) {
             return;
         }
 
