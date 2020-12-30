@@ -31,6 +31,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -49,8 +50,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     //private NonNullList<ItemStack> chestContents = NonNullList.<ItemStack>withSize(14, ItemStack.EMPTY);
     private int cellarTick = -240;    //Because a bunker may be not in the same chunk
     public float temperature = -1;
-    public int isOpen = 0;
+    //public int isOpen = 0;
     private int updateTickCounter = 120;
+    private boolean worldLoaded = false;
 
 
     public TECellarShelf() {
@@ -58,16 +60,20 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     }
 
 
+    @SubscribeEvent
+    public void loaded(WorldEvent.Load worldEvent){
+        worldLoaded = true;
+    }
     @Override
     public void update() {
-        if(world.isRemote) {
+        if(world.isRemote || worldLoaded == false) {
             return;
         }
 
         if(updateTickCounter % 5 == 0) {
-            if(isOpen == 0) {
-                handleItemTicking();
-            }
+            //if(isOpen == 0) {
+            handleItemTicking();
+            //}
         }
 
         updateTickCounter++;

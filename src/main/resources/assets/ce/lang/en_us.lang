@@ -13,6 +13,6 @@ block.cellar_wall.name=Cellar Wall
 
 itemGroup.ce=TFC Cellars
 
-tfc.food_traits.ceCool=CooledSharkBark
-tfc.food_traits.icy=IcySharkBark
-tfc.food_traits.icle=FrozenSharkBark
+tfc.food_traits.sharkCool=Cooled
+tfc.food_traits.sharkIcy=Icy
+tfc.food_traits.sharkIcle=Frozen
