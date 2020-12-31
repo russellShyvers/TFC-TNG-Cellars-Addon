@@ -1,9 +1,12 @@
 package net.sharkbark.cellars.blocks.tileentity;
-//ClimateTFC.getAvgTemp(this.getPos());
 
 import com.google.common.base.Optional;
 import com.mojang.authlib.properties.Property;
+import net.dries007.tfc.objects.blocks.BlockIceTFC;
 import net.dries007.tfc.objects.blocks.BlockSnowTFC;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
+import net.dries007.tfc.objects.blocks.property.ILightableBlock;
+import net.dries007.tfc.objects.items.metal.ItemLamp;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.minecraft.block.*;
@@ -55,7 +58,10 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
     private boolean isComplete = false;
     private boolean hasAirlock = false;
 
-    private float avgYearTemp = Float.MIN_VALUE;
+
+    private float iceTemp = 0;
+    private boolean dryIce = false;
+    private boolean seaIce = false;
     private float lossMult = -1f;
 
     private float temperature = -1;	//-1000 cellar is not complete
@@ -110,19 +116,20 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
                 updateCellar(false);
             }
 
-            updateContainers();
+            if(error != 0) {
+                updateContainers();
+            }
         }
         updateTickCounter++;
     }
 
     private void updateCellar(boolean checkCompliance) {
-        if (avgYearTemp == Float.MIN_VALUE) {
-            for (int month = 0; month < 12; month++) {
-                avgYearTemp += ClimateTFC.getActualTemp(this.getPos());
-            }
-            avgYearTemp = avgYearTemp * 0.015f;    //Magic! (divide by 12 (average) * 0.18)
+        if(ModConfig.tempMonthAvg){
+            temperature = ClimateTFC.getMonthlyTemp(this.getPos());
+        }else{
+            temperature = ClimateTFC.getActualTemp(this.getPos());
         }
-        temperature = avgYearTemp;
+
 
         if(checkCompliance) {
             this.isComplete = isStructureComplete();
@@ -130,49 +137,70 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
 
         if(isComplete) {
             float outsideTemp = ClimateTFC.getActualTemp(this.getPos());
-            if(coolantAmount <= 0) {
-                for(int slot = 3; slot >= 0; slot--) {
-                    if(!chestContents.get(slot).isEmpty()) {
-                        if(Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIce) {
+
+            if (coolantAmount <= 0) {
+                for (int slot = 3; slot >= 0; slot--) {
+                    if (!chestContents.get(slot).isEmpty()) {
+                        if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockPackedIce) {
+                            coolantAmount = coolantAmount + 60;
+                            seaIce = false;
+                            dryIce = true;
+                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIceTFC) {
                             coolantAmount = coolantAmount + 120;
-                        } else if(Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockSnow) {
-                            coolantAmount = coolantAmount + 40;
-                        }
-                        lastUpdate = (int)CalendarTFC.CALENDAR_TIME.getTotalDays();
+                            seaIce = true;
+                            dryIce = false;
+                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIce) {
+                            coolantAmount = coolantAmount + 180;
+                            seaIce = false;
+                            dryIce = false;
+                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockSnow) {
+                            coolantAmount = coolantAmount + 60;
+                            seaIce = false;
+                            dryIce = false;
+                        } else continue;
+
+                        lastUpdate = (int) CalendarTFC.CALENDAR_TIME.getTotalDays();
                         decrStackSize(slot, 1);
-                        temperature = ModConfig.iceHouseTemperature;
                         break;
                     }
                 }
             }
 
-            if(coolantAmount > 0) {
+            if (coolantAmount > 0) {
                 temperature = ModConfig.iceHouseTemperature;
-                if(lastUpdate < (int)CalendarTFC.CALENDAR_TIME.getTotalDays()) {
-                    if(outsideTemp > -10) {	//magic
+                if (lastUpdate < (int) CalendarTFC.CALENDAR_TIME.getTotalDays()) {
+                    if (outsideTemp > -10) {    //magic
                         int volume = (size[1] + size[3] + 1) * (size[0] + size[2] + 1);
-                        coolantAmount = coolantAmount - (int)(ModConfig.coolantConsumptionMultiplier * (0.05 * volume * (1 + lossMult) * (outsideTemp + volume + 2)));
+                        coolantAmount = coolantAmount - (int) (ModConfig.coolantConsumptionMultiplier * (0.05 * volume * (1 + lossMult) * (outsideTemp + volume + 2)));
                     }
                     lastUpdate++;
                 }
             }
 
             float doorsLossMult = doorsLossMult();
-            if(lossMult == -1) {
+            if (lossMult == -1) {
                 lossMult = doorsLossMult;
             }
 
-            if(lossMult != doorsLossMult) {
-                if(lossMult > doorsLossMult) {
+            if (lossMult != doorsLossMult) {
+                if (lossMult > doorsLossMult) {
                     lossMult = (lossMult - 0.01f) * 0.75f;
                     lossMult = Math.max(doorsLossMult, lossMult);
                 } else {
-                    lossMult = (lossMult + 0.01f) * 1.15f;	//0.05f because lossMult can to be 0
+                    lossMult = (lossMult + 0.01f) * 1.15f;    //0.05f because lossMult cant be 0
                     lossMult = Math.min(doorsLossMult, lossMult);
                 }
             }
 
-            temperature = temperature + lossMult * outsideTemp;
+            iceTemp = 0;
+            if(ModConfig.specialIceTraits) {
+                if (dryIce) {
+                    iceTemp = -78;
+                } else if (seaIce) {
+                    iceTemp = -21;
+                }
+            }
+            temperature = temperature + lossMult * (outsideTemp - iceTemp);
             if(temperature > outsideTemp) {
                 temperature = outsideTemp;
             }
@@ -382,6 +410,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
         } else if(block instanceof CellarDoor) {
             return 1;
         } else if(block instanceof BlockCellarShelf || block instanceof BlockWallSign || block instanceof BlockStandingSign ||
+                  block instanceof BlockTorch || block instanceof BlockRedstoneTorch || block instanceof ILightableBlock ||
                 world.isAirBlock(new BlockPos(getPos().getX() + x, getPos().getY() + y, getPos().getZ() + z))) {
             return 2;
         }
@@ -464,6 +493,9 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
         coolantAmount = tagCompound.getInteger("CoolantAmount");
         error = tagCompound.getByte("ErrorCode");
         isComplete = tagCompound.getBoolean("isCompliant");
+        iceTemp = tagCompound.getFloat("iceTemp");
+        dryIce = tagCompound.getBoolean("dryIce");
+        seaIce = tagCompound.getBoolean("seaIce");
     }
 
     @Override
@@ -478,6 +510,9 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
         tagCompound.setInteger("CoolantAmount", coolantAmount);
         tagCompound.setByte("ErrorCode", error);
         tagCompound.setBoolean("isCompliant", isComplete);
+        tagCompound.setFloat("iceTemp", iceTemp);
+        tagCompound.setBoolean("dryIce", dryIce);
+        tagCompound.setBoolean("seaIce", seaIce);
 
         return tagCompound;
     }
