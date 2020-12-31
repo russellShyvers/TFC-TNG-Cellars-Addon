@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_top",
+    "textures": {
+        "bottom": "cellars:blocks/cellar_door_bottom",
+        "top": "cellars:blocks/cellar_door_top"
+    }
+}

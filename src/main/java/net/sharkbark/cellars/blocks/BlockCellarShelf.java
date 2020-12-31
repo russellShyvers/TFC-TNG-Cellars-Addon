@@ -11,6 +11,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -79,6 +80,11 @@ public class BlockCellarShelf extends BlockContainer implements IHasModel {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
+        if(!world.isRemote) {
+            System.out.println("Client : Creating TileEntity");
+        }else{
+            System.out.println("Server : Creating TileEntity");
+        }
         return new TECellarShelf();
     }
 

@@ -11,7 +11,7 @@ container.cellar_shelf=Cellar Shelf
 block.cellar_door.name=Cellar Door
 block.cellar_wall.name=Cellar Wall
 
-itemGroup.ce=TFC Cellars
+itemGroup.cellars=TFC Cellars
 
 tfc.food_traits.sharkCool=Cooled
 tfc.food_traits.sharkIcy=Icy

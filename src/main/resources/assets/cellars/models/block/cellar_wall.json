@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "ce:blocks/cellar_wall"
+    "all": "cellars:blocks/cellar_wall"
   }
 }

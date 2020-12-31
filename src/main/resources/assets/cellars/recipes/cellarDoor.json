@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+  [
+    "PCP",
+    "PSP",
+    "PCP"
+  ],
+
+  "key":
+  {
+    "P":
+    {
+      "type": "forge:ore_dict",
+      "ore": "lumber"
+    },
+    "C":
+    {
+      "type": "forge:ore_dict",
+      "ore": "clay"
+    },
+    "S":
+    {
+      "type": "forge:ore_dict",
+      "ore": "straw"
+    }
+  },
+
+  "result":
+  {
+    "item": "cellar:cellar_door",
+    "count": 1
+  }
+}

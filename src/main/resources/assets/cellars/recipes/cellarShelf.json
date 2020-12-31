@@ -3,9 +3,9 @@
 
   "pattern":
   [
+    "R R",
     "RRR",
-    "RSR",
-    "RRR"
+    "R R"
   ],
 
   "key":
@@ -14,16 +14,12 @@
     {
       "type": "forge:ore_dict",
       "ore": "lumber"
-    },
-    "S":
-    {
-      "item": "minecraft:snow"
     }
   },
 
   "result":
   {
-    "item": "ce:ice_bunker",
+    "item": "cellar:cellar_shelf",
     "count": 1
   }
 }

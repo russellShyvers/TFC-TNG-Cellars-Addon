@@ -118,7 +118,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
     private void updateCellar(boolean checkCompliance) {
         if (avgYearTemp == Float.MIN_VALUE) {
             for (int month = 0; month < 12; month++) {
-                avgYearTemp += ClimateTFC.getAvgTemp(this.getPos());
+                avgYearTemp += ClimateTFC.getActualTemp(this.getPos());
             }
             avgYearTemp = avgYearTemp * 0.015f;    //Magic! (divide by 12 (average) * 0.18)
         }
@@ -129,7 +129,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
         }
 
         if(isComplete) {
-            float outsideTemp = ClimateTFC.getAvgTemp(this.getPos());
+            float outsideTemp = ClimateTFC.getActualTemp(this.getPos());
             if(coolantAmount <= 0) {
                 for(int slot = 3; slot >= 0; slot--) {
                     if(!chestContents.get(slot).isEmpty()) {

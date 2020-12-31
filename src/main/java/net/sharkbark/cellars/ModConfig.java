@@ -13,7 +13,6 @@ public class ModConfig {
     public static float coolMod;
     public static float icyMod;
     public static float icleMod;
-    public static boolean enable;
 
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -37,10 +36,6 @@ public class ModConfig {
         Property icleModProperty = config.get(Configuration.CATEGORY_GENERAL, "icleMod", 100);
         icleModProperty.setComment("1000 is 1.00, 1230 is 1.23");
         icleMod = (float) (0.001 * coolantConsumptionMultiplierProperty.getInt());
-
-        Property enableProperty = config.get(Configuration.CATEGORY_GENERAL, "enabledProperty", true);
-        enableProperty.setComment("Disables Cellar Shelves and Bunker when set to false.");
-        enable = (boolean) (true);
 
         config.save();
     }

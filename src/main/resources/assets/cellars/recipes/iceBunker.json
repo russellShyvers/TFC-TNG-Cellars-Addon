@@ -3,28 +3,28 @@
 
   "pattern":
   [
-    "PPP",
-    "PWP",
-    "PPP"
+    "R R",
+    "S S",
+    "R R"
   ],
 
   "key":
   {
-    "P":
+    "R":
     {
       "type": "forge:ore_dict",
       "ore": "lumber"
     },
-    "W":
+    "S":
     {
       "type": "forge:ore_dict",
-      "ore": "wool"
+      "ore": "plankWood"
     }
   },
 
   "result":
   {
-    "item": "ce:cellar_wall",
-    "count": 8
+    "item": "cellar:ice_bunker",
+    "count": 1
   }
 }
