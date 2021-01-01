@@ -40,13 +40,13 @@ public class ModConfig {
 
         Property coolModProperty = config.get(Configuration.CATEGORY_GENERAL, "coolMod", 800);
         coolModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tCurrently none functional till logic rewrite");
-        coolMod = (float) (0.001 * coolantConsumptionMultiplierProperty.getInt());
+        coolMod = (float) (0.001 * coolModProperty.getInt());
         Property icyModProperty = config.get(Configuration.CATEGORY_GENERAL, "icyMod", 300);
         icyModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tCurrently none functional till logic rewrite");
-        icyMod = (float) (0.001 * coolantConsumptionMultiplierProperty.getInt());
+        icyMod = (float) (0.001 * icyModProperty.getInt());
         Property icleModProperty = config.get(Configuration.CATEGORY_GENERAL, "icleMod", 100);
         icleModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tCurrently none functional till logic rewrite");
-        icleMod = (float) (0.001 * coolantConsumptionMultiplierProperty.getInt());
+        icleMod = (float) (0.001 * icleModProperty.getInt());
 
         config.save();
     }

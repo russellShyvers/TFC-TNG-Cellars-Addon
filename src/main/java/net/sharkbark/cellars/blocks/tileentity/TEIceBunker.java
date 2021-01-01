@@ -51,6 +51,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
     //NBT
     //private ItemStack[] inventory = null;
     private int coolantAmount = 0;
+    private int coolantRate = 0;
     private int lastUpdate = 0;
 
     private int[] entrance = new int[4];	//x, z of the first door + offsetX, offsetZ of the second door
@@ -112,11 +113,16 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             if(updateTickCounter >= 1200) {
                 updateCellar(true);
                 updateTickCounter = 0;
+                if(error != 0){
+                    System.out.println("Telling my buddies to break down.");
+                    updateContainers();
+                }
             } else {
                 updateCellar(false);
             }
 
-            if(error != 0) {
+            if(error == 0) {
+                System.out.println("Sending buddies an updated temperature.");
                 updateContainers();
             }
         }
@@ -172,6 +178,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
                     if (outsideTemp > -10) {    //magic
                         int volume = (size[1] + size[3] + 1) * (size[0] + size[2] + 1);
                         coolantAmount = coolantAmount - (int) (ModConfig.coolantConsumptionMultiplier * (0.05 * volume * (1 + lossMult) * (outsideTemp + volume + 2)));
+                        coolantRate = (int) (ModConfig.coolantConsumptionMultiplier * (0.05 * volume * (1 + lossMult) * (outsideTemp + volume + 2)));
                     }
                     lastUpdate++;
                 }
@@ -410,7 +417,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
         } else if(block instanceof CellarDoor) {
             return 1;
         } else if(block instanceof BlockCellarShelf || block instanceof BlockWallSign || block instanceof BlockStandingSign ||
-                  block instanceof BlockTorch || block instanceof BlockRedstoneTorch || block instanceof ILightableBlock ||
+                  block instanceof BlockTorch || block instanceof BlockRedstoneTorch || block instanceof ILightableBlock || block instanceof BlockRedstoneLight ||
                 world.isAirBlock(new BlockPos(getPos().getX() + x, getPos().getY() + y, getPos().getZ() + z))) {
             return 2;
         }
@@ -491,6 +498,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
 
         lastUpdate = tagCompound.getInteger("LastUpdate");
         coolantAmount = tagCompound.getInteger("CoolantAmount");
+        coolantRate = tagCompound.getInteger("CoolantRate");
         error = tagCompound.getByte("ErrorCode");
         isComplete = tagCompound.getBoolean("isCompliant");
         iceTemp = tagCompound.getFloat("iceTemp");
@@ -508,6 +516,7 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
 
         tagCompound.setInteger("LastUpdate", lastUpdate);
         tagCompound.setInteger("CoolantAmount", coolantAmount);
+        tagCompound.setInteger("CoolantRate", coolantRate);
         tagCompound.setByte("ErrorCode", error);
         tagCompound.setBoolean("isCompliant", isComplete);
         tagCompound.setFloat("iceTemp", iceTemp);
@@ -565,5 +574,13 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
     @Override
     public void closeInventory(EntityPlayer p_closeInventory_1_) {
         this.world.notifyNeighborsOfStateChange(pos, this.getBlockType(), false);
+    }
+
+    public int getCoolant() {
+        return coolantAmount;
+    }
+
+    public float getCoolantRate() {
+        return coolantRate/100.0F;
     }
 }

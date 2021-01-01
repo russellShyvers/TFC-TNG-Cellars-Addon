@@ -1,5 +1,6 @@
 package net.sharkbark.cellars;
 
+import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -9,6 +10,10 @@ import net.sharkbark.cellars.proxy.CommonProxy;
 import net.sharkbark.cellars.util.CellarsTab;
 import net.sharkbark.cellars.util.Reference;
 import net.sharkbark.cellars.util.handlers.RegistryHandler;
+
+import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
 public class Main {
@@ -29,12 +34,27 @@ public class Main {
     @Mod.EventHandler
     public void Init(FMLInitializationEvent event)
     {
+        System.out.println("Mod Config for Cellars has Cool Mod as "+ModConfig.coolMod);
+        System.out.println("Mod Config for Cellars has Icy Mod as "+ModConfig.icyMod);
+        System.out.println("Mod Config for Cellars has Frozen Mod as "+ModConfig.icleMod);
+
         RegistryHandler.initRegistries();
+
+        Reference.COOL = new FoodTrait("sharkCool", ModConfig.coolMod);
+        Reference.ICY = new FoodTrait("sharkIcy", ModConfig.icyMod);
+        Reference.FREEZING = new FoodTrait("sharkIcle", ModConfig.icleMod);
+
+        Map<String, FoodTrait> tmp = FoodTrait.getTraits();
+        for (Map.Entry<String,FoodTrait> entry : tmp.entrySet())
+            System.out.println("Key = " + entry.getKey() +
+                    ", Value = " + entry.getValue() +
+                    ", Decay = " + entry.getValue().getDecayModifier());
+
     }
     @Mod.EventHandler
     public void PostInit(FMLPostInitializationEvent event)
     {
-
+        Reference.initialized = true;
     }
 
 }

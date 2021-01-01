@@ -3,7 +3,7 @@
   "modid": "cellars",
   "name": "Cellars Addon",
   "description": "A faithful recreation of the cellars mod for TFC by Sladki, for 1.12",
-  "version": "1.22.4",
+  "version": "1.22.5",
   "mcversion": "1.12",
   "url": "https://www.curseforge.com/minecraft/mc-mods/tfc-cellars-add-on",
   "updateUrl": "https://www.curseforge.com/minecraft/mc-mods/tfc-cellars-add-on/files/all",
@@ -11,7 +11,7 @@
   "credits": "The TFC:TNG Devs for all their help and guidance.",
   "logoFile": "assets/cellars/textures/items/cellar_door.png",
   "screenshots": [],
-  "requiredMods": [ "TFC: TNG", "TFC Ambiental" ],
-  "dependencies": [ "TFC: TNG", "TFC Ambiental" ]
+  "requiredMods": [ "terrafirmacraft" ],
+  "dependencies": [ "terrafirmacraft" ]
 }
 ]

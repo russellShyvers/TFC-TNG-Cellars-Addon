@@ -45,6 +45,8 @@ public class GuiIceBunker extends GuiContainer {
         if(mouseX >= guiLeft + 5 && mouseX <= guiLeft + 15 && mouseY >= guiTop + 5 && mouseY <= guiTop + 15) {
             List<String> infoText = new ArrayList<String>();
             float temperature = te.getTemperature();
+            int coolant = te.getCoolant();
+            float coolantRate = te.getCoolantRate();
 
             if(temperature <= -1000) {
                 switch((int)(temperature * 0.001f)) {
@@ -64,6 +66,8 @@ public class GuiIceBunker extends GuiContainer {
                 } else {
                     infoText.add("Temperature: " + String.format("%.2f", temperature));
                 }
+                infoText.add("Coolant: " + coolant + " units");
+                infoText.add("Coolant Consumption Rate: " + String.format("%.2f",coolantRate) + " per tick");
             }
 
             this.drawHoveringText(infoText, mouseX, mouseY, this.fontRenderer);

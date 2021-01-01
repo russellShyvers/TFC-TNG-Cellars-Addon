@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down": { "model": "cellars:cellar_lamp", "x": 90 },
+    "facing=up": { "model": "cellars:cellar_lamp", "x": 270 },
+    "facing=north": { "model": "cellars:cellar_lamp" },
+    "facing=south": { "model": "cellars:cellar_lamp", "y": 180 },
+    "facing=west": { "model": "cellars:cellar_lamp", "y": 270 },
+    "facing=east": { "model": "cellars:cellar_lamp", "y": 90 }
+  }
+}
