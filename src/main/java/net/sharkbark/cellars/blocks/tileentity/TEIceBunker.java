@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -87,9 +88,9 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
         }
 
         if(isComplete) {
-            if(temperature < 0) {
+            if(temperature < ModConfig.frozenMaxThreshold) {
                 player.sendMessage(new TextComponentString("It is icy here"));
-            } else if(temperature < 5) {
+            } else if(temperature < ModConfig.icyMaxThreshold) {
                 player.sendMessage(new TextComponentString("It is freezing here"));
             } else {
                 player.sendMessage(new TextComponentString("The cellar is chilly"));
@@ -114,7 +115,9 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
                 updateCellar(true);
                 updateTickCounter = 0;
                 if(error != 0){
-                    System.out.println("Telling my buddies to break down.");
+                    if(ModConfig.isDebugging) {
+                        System.out.println("Telling my buddies to break down.");
+                    }
                     updateContainers();
                 }
             } else {
@@ -122,7 +125,9 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             }
 
             if(error == 0) {
-                System.out.println("Sending buddies an updated temperature.");
+                if(ModConfig.isDebugging) {
+                    System.out.println("Sending buddies an updated temperature.");
+                }
                 updateContainers();
             }
         }
@@ -148,19 +153,23 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
                 for (int slot = 3; slot >= 0; slot--) {
                     if (!chestContents.get(slot).isEmpty()) {
                         if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockPackedIce) {
-                            coolantAmount = coolantAmount + 60;
+                            coolantAmount = coolantAmount + ModConfig.packedIceCoolant;
                             seaIce = false;
                             dryIce = true;
                         } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIceTFC) {
-                            coolantAmount = coolantAmount + 120;
+                            coolantAmount = coolantAmount + ModConfig.seaIceCoolant;
                             seaIce = true;
                             dryIce = false;
                         } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIce) {
-                            coolantAmount = coolantAmount + 180;
+                            coolantAmount = coolantAmount + ModConfig.iceCoolant;
                             seaIce = false;
                             dryIce = false;
-                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockSnow) {
-                            coolantAmount = coolantAmount + 60;
+                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockSnowBlock) {
+                            coolantAmount = coolantAmount + ModConfig.snowCoolant;
+                            seaIce = false;
+                            dryIce = false;
+                        }else if (chestContents.get(slot).getItem() == new ItemSnowball()) {
+                            coolantAmount = coolantAmount + ModConfig.snowBallCoolant;
                             seaIce = false;
                             dryIce = false;
                         } else continue;

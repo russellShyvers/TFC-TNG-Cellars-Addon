@@ -55,11 +55,12 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     @Override
     public void update() {
         if (updateTickCounter % 100 == 0 || lastUpdate == 240){
-            System.out.println("I should update the my temperature: " + temperature);
-            System.out.println("My mod init is: " + Reference.initialized);
-            System.out.println("Am I remote?: " + world.isRemote);
-            System.out.println("Does master not love me?: " + lastUpdate);
-
+            if(ModConfig.isDebugging) {
+                System.out.println("I should update the my temperature: " + temperature);
+                System.out.println("My mod init is: " + Reference.initialized);
+                System.out.println("Am I remote?: " + world.isRemote);
+                System.out.println("Does master not love me?: " + lastUpdate);
+            }
         }
 
         if(world.isRemote || Reference.initialized == false) {
@@ -68,7 +69,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         }
 
         if (updateTickCounter % 100 == 0 || lastUpdate == 240){
-            System.out.println("Updating!");
+            if(ModConfig.isDebugging) {
+                System.out.println("Updating!");
+            }
             handleItemTicking();
         }
         updateTickCounter++;
@@ -99,7 +102,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
                 }
             }
             //Updates shelf contents.
-            System.out.println("Time to update traits!");
+            if(ModConfig.isDebugging) {
+                System.out.println("Time to update traits!");
+            }
             updateTraits();
         } else {
             cellarTick++;
@@ -162,27 +167,27 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
                 System.out.println("Temperature is for server: " + temperature);
                 System.out.println("NBT String is: " + string + "            ");
             }
-            if (temperature > 20 || temperature <= -1000) {
+            if (temperature > ModConfig.coolMaxThreshold || temperature <= -1000) {
                 removeTrait(stack, nbt);
                 if(ModConfig.isDebugging) {
                     System.out.println("Not trait");
                 }
             } else
-            if ((temperature <= 0 && temperature > -1000) && string.compareTo("freezing") != 0) {
+            if ((temperature <= ModConfig.frozenMaxThreshold && temperature > -1000) && string.compareTo("freezing") != 0) {
                 removeTrait(stack, nbt);
                 applyTrait(stack, nbt, "freezing", Reference.FREEZING);
                 if(ModConfig.isDebugging) {
                     System.out.println("Freezing");
                 }
             } else
-            if ((temperature <= 5 && temperature > 0) && string.compareTo("icy") != 0) {
+            if ((temperature <= ModConfig.icyMaxThreshold && temperature > ModConfig.frozenMaxThreshold) && string.compareTo("icy") != 0) {
                 removeTrait(stack, nbt);
                 applyTrait(stack, nbt, "icy", Reference.ICY);
                 if(ModConfig.isDebugging) {
                     System.out.println("Icy");
                 }
             } else
-            if ((temperature <= 20 && temperature > 5) && string.compareTo("cool") != 0) {
+            if ((temperature <= ModConfig.coolMaxThreshold && temperature > ModConfig.icyMaxThreshold) && string.compareTo("cool") != 0) {
                 removeTrait(stack, nbt);
                 applyTrait(stack, nbt, "cool", Reference.COOL);
                 if(ModConfig.isDebugging) {
@@ -193,7 +198,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     }
 
     public void updateShelf(float temp) {
-        System.out.println("Receiving temperature from master.");
+        if(ModConfig.isDebugging) {
+            System.out.println("Receiving temperature from master.");
+        }
         cellarTick = 100;
         temperature = temp;
         lastUpdate = 240;
@@ -243,7 +250,9 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
             System.out.println("BREAKING BLOCK !!!! DROPPING");
         }
         for(int i = 0; i < 14; ++i) {
-            System.out.println("SLOT " + i);
+            if(ModConfig.isDebugging) {
+                System.out.println("SLOT " + i);
+            }
             ItemStack stack = inventory.getStackInSlot(i);
             NBTTagCompound nbt;
             if(stack.hasTagCompound()){
@@ -306,16 +315,6 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         public CellarShelfItemStackHandler(int size) {
             super(size);
             this.deserializeNBT(new NBTTagCompound());
-        }
-
-        @Override
-        public NBTTagCompound serializeNBT() {
-            return super.serializeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(NBTTagCompound nbt) {
-            super.deserializeNBT(nbt);
         }
 
         public ItemStack extractItem(int slot, int amount, boolean simulate)

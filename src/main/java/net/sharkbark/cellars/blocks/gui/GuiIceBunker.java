@@ -33,14 +33,6 @@ public class GuiIceBunker extends GuiContainer {
         String name = I18n.format(this.playerInventory.getDisplayName().getUnformattedText());
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 00000000);
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize-92, 00000000);
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color(1.0f,1.0f,1.0f,1.0f);
-        this.mc.getTextureManager().bindTexture(GUI_BUNKER);
-        this.drawTexturedModalRect(this.guiLeft,this.guiTop, 0, 0, this.xSize, this.ySize);
-
 
         if(mouseX >= guiLeft + 5 && mouseX <= guiLeft + 15 && mouseY >= guiTop + 5 && mouseY <= guiTop + 15) {
             List<String> infoText = new ArrayList<String>();
@@ -67,10 +59,17 @@ public class GuiIceBunker extends GuiContainer {
                     infoText.add("Temperature: " + String.format("%.2f", temperature));
                 }
                 infoText.add("Coolant: " + coolant + " units");
-                infoText.add("Coolant Consumption Rate: " + String.format("%.2f",coolantRate) + " per tick");
+                //infoText.add("Coolant Consumption Rate: " + String.format("%.2f",coolantRate) + " per tick");
             }
 
             this.drawHoveringText(infoText, mouseX, mouseY, this.fontRenderer);
         }
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        GlStateManager.color(1.0f,1.0f,1.0f,1.0f);
+        this.mc.getTextureManager().bindTexture(GUI_BUNKER);
+        this.drawTexturedModalRect(this.guiLeft,this.guiTop, 0, 0, this.xSize, this.ySize);
     }
 }

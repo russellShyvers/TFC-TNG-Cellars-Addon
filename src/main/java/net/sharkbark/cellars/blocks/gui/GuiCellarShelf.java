@@ -54,25 +54,11 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
     }
 
     @Override
-    public void onGuiClosed() {
-        //TE.isOpen -= 1;
-        super.onGuiClosed();
-    }
-
-    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         String name = I18n.format(translationKey + ".name");
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 00000000);
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize-92, 00000000);
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-    {
-        GlStateManager.color(1.0f,1.0f,1.0f,1.0f);
-        this.mc.getTextureManager().bindTexture(CELLAR_SHELF_BACKGROUND);
-        this.drawTexturedModalRect(this.guiLeft,this.guiTop, 0, 0, this.xSize, this.ySize);
 
         if(mouseX >= guiLeft + 5 && mouseX <= guiLeft + 15 && mouseY >= guiTop + 5 && mouseY <= guiTop + 15) {
             List<String> infoText = new ArrayList<String>();
@@ -90,6 +76,14 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
 
             this.drawHoveringText(infoText, mouseX, mouseY, this.fontRenderer);
         }
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+    {
+        GlStateManager.color(1.0f,1.0f,1.0f,1.0f);
+        this.mc.getTextureManager().bindTexture(CELLAR_SHELF_BACKGROUND);
+        this.drawTexturedModalRect(this.guiLeft,this.guiTop, 0, 0, this.xSize, this.ySize);
     }
 
 }
