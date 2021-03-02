@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "cellars:items/tools/blue_steel_ice_saw"
+    }
+}
