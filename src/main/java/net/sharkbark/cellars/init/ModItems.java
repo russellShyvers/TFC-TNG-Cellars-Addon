@@ -1,14 +1,14 @@
 package net.sharkbark.cellars.init;
 
-import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Metal;
-import net.dries007.tfc.types.DefaultMetals;
+import net.dries007.tfc.objects.items.metal.ItemMetalTool;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.sharkbark.cellars.items.ItemIceSaw;
-import net.sharkbark.cellars.items.ItemToolHead;
-import net.sharkbark.cellars.util.Reference;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
+import net.sharkbark.cellars.blocks.CellarDoor;
+import net.sharkbark.cellars.items.ItemBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,59 +17,7 @@ public class ModItems {
 
     public static final List<Item> ITEMS = new ArrayList<Item>();
 
-    @ObjectHolder(Reference.MOD_ID + ":bronze_ice_saw")
-    public static final Item BRONZE_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":bismuth_bronze_ice_saw")
-    public static final Item BISMUTH_BRONZE_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":black_bronze_ice_saw")
-    public static final Item BLACK_BRONZE_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":wrought_iron_ice_saw")
-    public static final Item WROUGHT_IRON_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":steel_ice_saw")
-    public static final Item STEEL_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":black_steel_ice_saw")
-    public static final Item BLACK_STEEL_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":red_steel_ice_saw")
-    public static final Item RED_STEEL_ICE_SAW = null;
-    @ObjectHolder(Reference.MOD_ID + ":blue_steel_ice_saw")
-    public static final Item BLUE_STEEL_ICE_SAW = null;
+    //TFC Ice Saw
 
-    @ObjectHolder(Reference.MOD_ID + ":bronze_ice_saw_head")
-    public static final Item BRONZE_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":bismuth_bronze_ice_saw_head")
-    public static final Item BISMUTH_BRONZE_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":black_bronze_ice_saw_head")
-    public static final Item BLACK_BRONZE_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":wrought_iron_ice_saw_head")
-    public static final Item WROUGHT_IRON_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":steel_ice_saw_head")
-    public static final Item STEEL_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":black_steel_ice_saw_head")
-    public static final Item BLACK_STEEL_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":red_steel_ice_saw_head")
-    public static final Item RED_STEEL_ICE_SAW_HEAD = null;
-    @ObjectHolder(Reference.MOD_ID + ":blue_steel_ice_saw_head")
-    public static final Item BLUE_STEEL_ICE_SAW_HEAD = null;
 
-    public static void registerItems(IForgeRegistry<Item> registry) {
-        registry.registerAll(
-            new ItemIceSaw(Metal.BRONZE, "bronze_ice_saw"),
-            new ItemIceSaw(Metal.BISMUTH_BRONZE, "bismuth_bronze_ice_saw"),
-            new ItemIceSaw(Metal.BLACK_BRONZE, "black_bronze_ice_saw"),
-            new ItemIceSaw(Metal.WROUGHT_IRON, "wrought_iron_ice_saw"),
-            new ItemIceSaw(Metal.STEEL, "steel_ice_saw"),
-            new ItemIceSaw(TFCRegistries.METALS.getValue(DefaultMetals.BLACK_STEEL), "black_steel_ice_saw"),
-            new ItemIceSaw(Metal.RED_STEEL, "red_steel_ice_saw"),
-            new ItemIceSaw(Metal.BLUE_STEEL, "blue_steel_ice_saw"),
-
-            new ItemToolHead(Metal.BRONZE, "bronze_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(Metal.BISMUTH_BRONZE, "bismuth_bronze_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(Metal.BLACK_BRONZE, "black_bronze_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(Metal.WROUGHT_IRON, "wrought_iron_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(Metal.STEEL, "steel_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(TFCRegistries.METALS.getValue(DefaultMetals.BLACK_STEEL), "black_steel_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(Metal.RED_STEEL, "red_steel_ice_saw_head", "icesawBlade"),
-            new ItemToolHead(Metal.BLUE_STEEL, "blue_steel_ice_saw_head", "icesawBlade")
-        );
-    }
 }
