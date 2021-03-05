@@ -1,22 +1,5 @@
 item.cellar_door.name=Cellar Door
-item.bismuth_bronze_ice_saw_head.name=Bismuth Bronze Ice Saw Blade
-item.black_bronze_ice_saw_head.name=Black Bronze Ice Saw Blade
-item.black_steel_ice_saw_head.name=Black Steel Ice Saw Blade
-item.blue_steel_ice_saw_head.name=Blue Steel Ice Saw Blade
-item.bronze_ice_saw_head.name=Bronze Ice Saw Blade
-item.copper_ice_saw_head.name=Copper Ice Saw Blade
-item.wrought_iron_ice_saw_head.name=Wrought Iron Ice Saw Blade
-item.red_steel_ice_saw_head.name=Red Steel Ice Saw Blade
-item.steel_ice_saw_head.name=Steel Ice Saw Blade
-item.bismuth_bronze_ice_saw.name=Bismuth Bronze Ice Saw
-item.black_bronze_ice_saw.name=Black Bronze Ice Saw
-item.black_steel_ice_saw.name=Black Steel Ice Saw
-item.blue_steel_ice_saw.name=Blue Steel Ice Saw
-item.bronze_ice_saw.name=Bronze Ice Saw
-item.copper_ice_saw.name=Copper Ice Saw
-item.wrought_iron_ice_saw.name=Wrought Iron Ice Saw
-item.red_steel_ice_saw.name=Red Steel Ice Saw
-item.steel_ice_saw.name=Steel Ice Saw
+
 tile.cellar_wall.name=Cellar Wall
 tile.cellar_shelf.name=Cellar Shelf
 tile.ice_bunker.name=Ice Bunker
