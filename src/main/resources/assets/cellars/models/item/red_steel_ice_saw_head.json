@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "cellars:items/toolheads/red_steel_ice_saw_blade"
+    }
+}
