@@ -6,7 +6,6 @@ import net.dries007.tfc.objects.blocks.BlockIceTFC;
 import net.dries007.tfc.objects.blocks.BlockSnowTFC;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.property.ILightableBlock;
-import net.dries007.tfc.objects.items.metal.ItemLamp;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
 import net.minecraft.block.*;
@@ -16,9 +15,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +43,7 @@ import net.sharkbark.cellars.blocks.CellarDoor;
 import net.sharkbark.cellars.blocks.CellarWall;
 import net.sharkbark.cellars.blocks.container.ContainerIceBunker;
 import net.sharkbark.cellars.init.ModBlocks;
+import net.sharkbark.cellars.init.ModItems;
 import net.sharkbark.cellars.util.Reference;
 
 import javax.annotation.Nullable;
@@ -152,23 +154,24 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             if (coolantAmount <= 0) {
                 for (int slot = 3; slot >= 0; slot--) {
                     if (!chestContents.get(slot).isEmpty()) {
-                        if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockPackedIce) {
+                        Item item = chestContents.get(slot).getItem();
+                        if (item == ModItems.PACKED_ICE_SHARD || Block.getBlockFromItem(item) == Blocks.PACKED_ICE) {
                             coolantAmount = coolantAmount + ModConfig.packedIceCoolant;
                             seaIce = false;
                             dryIce = true;
-                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIceTFC) {
+                        } else if (item == ModItems.SEA_ICE_SHARD || Block.getBlockFromItem(item) == BlocksTFC.SEA_ICE) {
                             coolantAmount = coolantAmount + ModConfig.seaIceCoolant;
                             seaIce = true;
                             dryIce = false;
-                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockIce) {
+                        } else if (item == ModItems.ICE_SHARD || Block.getBlockFromItem(item) == Blocks.ICE) {
                             coolantAmount = coolantAmount + ModConfig.iceCoolant;
                             seaIce = false;
                             dryIce = false;
-                        } else if (Block.getBlockFromItem(chestContents.get(slot).getItem()) instanceof BlockSnowBlock) {
+                        } else if (Block.getBlockFromItem(item) == Blocks.SNOW) {
                             coolantAmount = coolantAmount + ModConfig.snowCoolant;
                             seaIce = false;
                             dryIce = false;
-                        }else if (chestContents.get(slot).getItem() == new ItemSnowball()) {
+                        }else if (item == Items.SNOWBALL) {
                             coolantAmount = coolantAmount + ModConfig.snowBallCoolant;
                             seaIce = false;
                             dryIce = false;
