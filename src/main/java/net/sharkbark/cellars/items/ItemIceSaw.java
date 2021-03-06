@@ -1,5 +1,7 @@
 package net.sharkbark.cellars.items;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -8,6 +10,7 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.dries007.tfc.api.types.Metal;
 import net.dries007.tfc.objects.blocks.BlockIceTFC;
+import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
 import net.minecraft.block.BlockPackedIce;
@@ -16,12 +19,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
+import net.sharkbark.cellars.init.ModItems;
 
 @Mod.EventBusSubscriber()
 public class ItemIceSaw extends ItemBase implements IMetalItem {
@@ -63,9 +69,8 @@ public class ItemIceSaw extends ItemBase implements IMetalItem {
 
     @Override
     public boolean canHarvestBlock(IBlockState state, ItemStack stack)
-    {        
-        Block block = state.getBlock();
-        if(block instanceof BlockIce || block instanceof BlockPackedIce || block instanceof BlockIceTFC) {
+    {
+        if (getDroppedItem(state) != null) {
             return true;
         }
         return super.canHarvestBlock(state, stack);
@@ -114,12 +119,30 @@ public class ItemIceSaw extends ItemBase implements IMetalItem {
             itemStack.damageItem(1, player);
         }
 
-        if(canHarvestBlock(state, itemStack)) {
-            EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(state.getBlock(), 1));
+        Item droppedItem = getDroppedItem(state);
+        if(droppedItem != null) {
+            EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(droppedItem, 1));
             world.spawnEntity(entityItem);
             world.setBlockToAir(pos);
         }
 
         return true;
+    }
+
+    @Nullable
+    private Item getDroppedItem(IBlockState state) {
+        Block block = state.getBlock();
+
+        if (block == BlocksTFC.SEA_ICE) {
+            return ModItems.SEA_ICE_SHARD;
+        }
+        else if (block == Blocks.PACKED_ICE) {
+            return ModItems.PACKED_ICE_SHARD;
+        }
+        else if (block == Blocks.ICE) {
+            return ModItems.ICE_SHARD;
+        }
+
+        return null;
     }
 }

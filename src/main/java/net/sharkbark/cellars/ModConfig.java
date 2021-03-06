@@ -72,7 +72,7 @@ public class ModConfig {
         Property snow = config.get(Configuration.CATEGORY_GENERAL, "snow", 60);
         snow.setComment("This setting dictates how much coolant you get from a block of Snow in the Ice Bunker");
         snowCoolant = snow.getInt();
-        Property snowBall = config.get(Configuration.CATEGORY_GENERAL, "packedIce", 15);
+        Property snowBall = config.get(Configuration.CATEGORY_GENERAL, "snowball", 15);
         snowBall.setComment("This setting dictates how much coolant you get from a block of Snowball in the Ice Bunker");
         snowBallCoolant = snowBall.getInt();
 
