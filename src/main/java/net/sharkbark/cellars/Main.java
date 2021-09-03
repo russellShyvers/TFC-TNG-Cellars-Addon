@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:tfc")
 public class Main {
 
     public static final CellarsTab creativeTab = new CellarsTab();
