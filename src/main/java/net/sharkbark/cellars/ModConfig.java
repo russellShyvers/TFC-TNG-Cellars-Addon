@@ -12,10 +12,10 @@ public class ModConfig {
     public static float coolMod;
     public static float icyMod;
     public static float icleMod;
+    public static float dryMod;
     public static boolean specialIceTraits;
     public static boolean tempMonthAvg;
-
-    //Adding
+    public static boolean disableShards;
     public static int packedIceCoolant;
     public static int seaIceCoolant;
     public static int iceCoolant;
@@ -44,6 +44,7 @@ public class ModConfig {
         specialIceTraits = config.get(Configuration.CATEGORY_GENERAL, "SpecialIceTraits", false).getBoolean(false);
         tempMonthAvg = config.get(Configuration.CATEGORY_GENERAL, "MonthAvgTemp", false).getBoolean(false);
         iceHouseTemperature = config.get(Configuration.CATEGORY_GENERAL, "TemperatureIceHouse", 1).getInt(1);
+        disableShards = config.get(Configuration.CATEGORY_GENERAL, "DisableShards", false).getBoolean(false);
 
         Property coolantConsumptionMultiplierProperty = config.get(Configuration.CATEGORY_GENERAL, "CoolantConsumptionMultiplier", 100);
         coolantConsumptionMultiplierProperty.setComment("The multiplier 100 is 1.0, 123 is 1.23\t:\tIs used to effect the fuel consumption rate.");
@@ -58,16 +59,19 @@ public class ModConfig {
         Property icleModProperty = config.get(Configuration.CATEGORY_GENERAL, "frozenMod", 250);
         icleModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tFrozen Trait Modifier");
         icleMod = (float) (0.001 * icleModProperty.getInt());
+        Property dryModProperty = config.get(Configuration.CATEGORY_GENERAL, "frozenMod", 250);
+        dryModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserved Trait Modifier for Freeze Dryer");
+        dryMod = (float) (0.001 * dryModProperty.getInt());
 
 
         Property packedIce = config.get(Configuration.CATEGORY_GENERAL, "packedIce", 60);
-        packedIce.setComment("This setting dictates how much coolant you get from a block of Packed Ice in the Ice Bunker");
+        packedIce.setComment("This setting dictates how much coolant you get from a block of Packed Ice or Packed Ice Shards in the Ice Bunker");
         packedIceCoolant = packedIce.getInt();
         Property seaIce = config.get(Configuration.CATEGORY_GENERAL, "seaIce", 180);
-        seaIce.setComment("This setting dictates how much coolant you get from a block of Sea Ice in the Ice Bunker");
+        seaIce.setComment("This setting dictates how much coolant you get from a block of Sea Ice or Sea Ice Shards in the Ice Bunker");
         seaIceCoolant = seaIce.getInt();
         Property ice = config.get(Configuration.CATEGORY_GENERAL, "ice", 120);
-        ice.setComment("This setting dictates how much coolant you get from a block of Ice in the Ice Bunker");
+        ice.setComment("This setting dictates how much coolant you get from a block of Ice or Ice Shards in the Ice Bunker");
         iceCoolant = ice.getInt();
         Property snow = config.get(Configuration.CATEGORY_GENERAL, "snow", 60);
         snow.setComment("This setting dictates how much coolant you get from a block of Snow in the Ice Bunker");

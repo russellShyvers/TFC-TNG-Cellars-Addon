@@ -27,6 +27,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
+import net.sharkbark.cellars.Main;
+import net.sharkbark.cellars.ModConfig;
 import net.sharkbark.cellars.init.ModItems;
 
 @Mod.EventBusSubscriber()
@@ -41,6 +43,7 @@ public class ItemIceSaw extends ItemBase implements IMetalItem {
         this.metal = metal;
         ToolMaterial material = metal.getToolMetal();
         setMaxStackSize(1);
+        setCreativeTab(Main.creativeTab);
         setMaxDamage(material.getMaxUses());
         efficiency = material.getEfficiency();
         attackDamage = (double)(0.5 * material.getAttackDamage());
@@ -134,13 +137,25 @@ public class ItemIceSaw extends ItemBase implements IMetalItem {
         Block block = state.getBlock();
 
         if (block == BlocksTFC.SEA_ICE) {
-            return ModItems.SEA_ICE_SHARD;
+            if (ModConfig.disableShards) {
+                return Item.getItemFromBlock(block);
+            } else {
+                return ModItems.SEA_ICE_SHARD;
+            }
         }
         else if (block == Blocks.PACKED_ICE) {
-            return ModItems.PACKED_ICE_SHARD;
+            if (ModConfig.disableShards) {
+                return Item.getItemFromBlock(block);
+            } else {
+                return ModItems.PACKED_ICE_SHARD;
+            }
         }
         else if (block == Blocks.ICE) {
-            return ModItems.ICE_SHARD;
+            if (ModConfig.disableShards) {
+                return Item.getItemFromBlock(block);
+            } else {
+                return ModItems.ICE_SHARD;
+            }
         }
 
         return null;

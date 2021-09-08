@@ -6,10 +6,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.sharkbark.cellars.blocks.container.ContainerCellarShelf;
+import net.sharkbark.cellars.blocks.container.ContainerFreezeDryer;
 import net.sharkbark.cellars.blocks.container.ContainerIceBunker;
 import net.sharkbark.cellars.blocks.gui.GuiCellarShelf;
+import net.sharkbark.cellars.blocks.gui.GuiFreezeDryer;
 import net.sharkbark.cellars.blocks.gui.GuiIceBunker;
 import net.sharkbark.cellars.blocks.tileentity.TECellarShelf;
+import net.sharkbark.cellars.blocks.tileentity.TEFreezeDryer;
 import net.sharkbark.cellars.blocks.tileentity.TEIceBunker;
 import net.sharkbark.cellars.util.Reference;
 
@@ -24,6 +27,9 @@ public class GuiHandler implements IGuiHandler {
         }
         if(ID == Reference.GUI_ICE_BUNKER){
             return new ContainerIceBunker(entityPlayer.inventory, (TEIceBunker) world.getTileEntity(new BlockPos(x,y,z)), entityPlayer);
+        }
+        if(ID == Reference.GUI_FREEZE_DRYER){
+            return new ContainerFreezeDryer(entityPlayer.inventory, (TEFreezeDryer) world.getTileEntity(new BlockPos(x,y,z)), entityPlayer);
         }
         return null;
     }
@@ -40,6 +46,11 @@ public class GuiHandler implements IGuiHandler {
         }
         if(ID == Reference.GUI_ICE_BUNKER){
             return new GuiIceBunker(entityPlayer.inventory, (TEIceBunker)world.getTileEntity(new BlockPos(x,y,z)), entityPlayer);
+        }
+
+        if(ID == Reference.GUI_FREEZE_DRYER){
+            TEFreezeDryer te = (TEFreezeDryer)world.getTileEntity(new BlockPos(x,y,z));
+            return new GuiFreezeDryer(container ,entityPlayer.inventory, te, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
         }
         return null;
     }

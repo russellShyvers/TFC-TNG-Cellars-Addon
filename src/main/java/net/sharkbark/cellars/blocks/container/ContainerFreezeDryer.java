@@ -6,10 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.sharkbark.cellars.blocks.tileentity.TECellarShelf;
+import net.sharkbark.cellars.ModConfig;
+import net.sharkbark.cellars.blocks.tileentity.TEFreezeDryer;
 
-public class ContainerCellarShelf extends ContainerTE<TECellarShelf> {
-    public ContainerCellarShelf(InventoryPlayer playerInv, TECellarShelf tile, EntityPlayer player) {
+public class ContainerFreezeDryer extends ContainerTE<TEFreezeDryer> {
+    public ContainerFreezeDryer(InventoryPlayer playerInv, TEFreezeDryer tile, EntityPlayer player) {
         super(playerInv, tile);
     }
 
@@ -19,12 +20,14 @@ public class ContainerCellarShelf extends ContainerTE<TECellarShelf> {
 
         if (inventory != null)
         {
-            for (int y = 0; y < 2; y++)
+            for (int y = 0; y < 3; y++)
             {
-                for (int x = 0; x < 7; x++)
+                for (int x = 0; x < 3; x++)
                 {
-
-                    addSlotToContainer(new SlotCallback(inventory, x+y*7, x*18+26, y*18+25, tile));
+                    if(ModConfig.isDebugging) {
+                        System.out.println("Adding slot x: "+ x +" y: " + y);
+                    }
+                    addSlotToContainer(new SlotCallback(inventory, x+y*3, x*18+17, y*18+17, tile));
                 }
             }
         }

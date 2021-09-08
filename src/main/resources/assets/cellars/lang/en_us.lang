@@ -22,11 +22,13 @@ item.packed_ice_shard.name=Packed Ice Shard
 item.sea_ice_shard.name=Sea Ice Shard
 tile.cellar_wall.name=Cellar Wall
 tile.cellar_shelf.name=Cellar Shelf
+tile.freeze_dryer.name=Freeze Dryer
 tile.ice_bunker.name=Ice Bunker
 tile.cellar_door.name=Cellar Door
 
 container.ice_bunker=Ice Bunker
 container.cellar_shelf=Cellar Shelf
+container.cellar_shelf=Freeze Dryer
 
 block.cellar_door.name=Cellar Door
 block.cellar_wall.name=Cellar Wall
@@ -36,3 +38,4 @@ itemGroup.cellars=TFC Cellars
 tfc.food_traits.sharkCool=Cooled
 tfc.food_traits.sharkIcy=Icy
 tfc.food_traits.sharkIcle=Frozen
+tfc.food_traits.sharkDry=Freeze Dryed

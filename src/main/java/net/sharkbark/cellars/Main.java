@@ -1,5 +1,6 @@
 package net.sharkbark.cellars;
 
+import akka.event.EventBus;
 import net.dries007.tfc.api.capability.food.FoodTrait;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -37,18 +38,22 @@ public class Main {
         System.out.println("Mod Config for Cellars has Cool Mod as "+ModConfig.coolMod);
         System.out.println("Mod Config for Cellars has Icy Mod as "+ModConfig.icyMod);
         System.out.println("Mod Config for Cellars has Frozen Mod as "+ModConfig.icleMod);
+        System.out.println("Mod Config for Cellars has Freeze Dryed Mod as "+ModConfig.dryMod);
 
         RegistryHandler.initRegistries();
 
         Reference.COOL = new FoodTrait("sharkCool", ModConfig.coolMod);
         Reference.ICY = new FoodTrait("sharkIcy", ModConfig.icyMod);
         Reference.FREEZING = new FoodTrait("sharkIcle", ModConfig.icleMod);
+        Reference.DRY = new FoodTrait("sharkDry", ModConfig.dryMod);
 
         Map<String, FoodTrait> tmp = FoodTrait.getTraits();
         for (Map.Entry<String,FoodTrait> entry : tmp.entrySet())
             System.out.println("Key = " + entry.getKey() +
                     ", Value = " + entry.getValue() +
                     ", Decay = " + entry.getValue().getDecayModifier());
+
+
 
     }
     @Mod.EventHandler

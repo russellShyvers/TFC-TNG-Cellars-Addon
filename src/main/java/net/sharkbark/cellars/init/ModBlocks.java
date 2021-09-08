@@ -18,4 +18,6 @@ public class ModBlocks {
     public static final Block CELLAR_DOOR = new CellarDoor("cellar_door", Material.ROCK);
     public static final Block CELLAR_SHELF = new BlockCellarShelf("cellar_shelf", Material.WOOD);
     public static final Block ICE_BUNKER = new BlockIceBunker("ice_bunker", Material.ROCK);
+
+    public static final Block FREEZE_DRYER = new FreezeDryer("freeze_dryer", Material.ROCK);
 }
