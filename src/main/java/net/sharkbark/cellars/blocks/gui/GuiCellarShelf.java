@@ -74,7 +74,7 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
                 }
             }
 
-            this.drawHoveringText(infoText, mouseX, mouseY, this.fontRenderer);
+            this.drawHoveringText(infoText, this.xSize-175, this.ySize-150, this.fontRenderer);
         }
     }
 

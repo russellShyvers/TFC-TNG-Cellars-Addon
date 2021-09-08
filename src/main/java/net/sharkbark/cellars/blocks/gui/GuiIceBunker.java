@@ -62,7 +62,7 @@ public class GuiIceBunker extends GuiContainer {
                 //infoText.add("Coolant Consumption Rate: " + String.format("%.2f",coolantRate) + " per tick");
             }
 
-            this.drawHoveringText(infoText, mouseX, mouseY, this.fontRenderer);
+            this.drawHoveringText(infoText, this.xSize-175, this.ySize-150, this.fontRenderer);
         }
     }
 

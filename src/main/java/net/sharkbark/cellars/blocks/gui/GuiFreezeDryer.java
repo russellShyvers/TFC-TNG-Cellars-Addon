@@ -1,11 +1,16 @@
 package net.sharkbark.cellars.blocks.gui;
 
 import net.dries007.tfc.client.gui.GuiContainerTE;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.sharkbark.cellars.blocks.tileentity.TEFreezeDryer;
 import net.sharkbark.cellars.util.Reference;
 
@@ -34,11 +39,11 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 00000000);
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize-92, 00000000);
 
-        /*
         if(mouseX >= guiLeft + 5 && mouseX <= guiLeft + 15 && mouseY >= guiTop + 5 && mouseY <= guiTop + 15) {
             List<String> infoText = new ArrayList<String>();
-            float temperature = TE.getTemperature();
-
+            int temperature = (int)TE.getTemperature();
+            int pressure = (int)TE.getPressure();
+            /*
             if(temperature <= -1000) {
                 infoText.add("[!] The shelf is not inside a cellar");
             } else {
@@ -48,10 +53,15 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
                     infoText.add("Temperature: " + String.format("%.2f", temperature));
                 }
             }
+            */
+            infoText.add("Temperature: " + temperature);
+            infoText.add("Pressure: " + pressure);
 
-            this.drawHoveringText(infoText, mouseX, mouseY, this.fontRenderer);
+            this.drawHoveringText(infoText, this.xSize-175, this.ySize-150, this.fontRenderer);
         }
-        */
+
+
+
     }
 
     @Override
@@ -62,18 +72,22 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
         this.drawTexturedModalRect(this.guiLeft,this.guiTop, 0, 0, this.xSize, this.ySize);
 
         if(true){
-            int k = (int)this.getHeatLeftScaled(52);
-            this.drawTexturedModalRect(this.guiLeft+74, this.guiTop+17+52-k, 180, 52-k, 5, k+1 );
+            int k = (int)this.getPressureLeftScaled(51);
+            this.drawTexturedModalRect(this.guiLeft+74, this.guiTop+17+52-k, 180, 52-k-1, 5, k+1 );
         }
 
         if(true){
-            int k = (int)this.getHeatLeftScaled(52);
-            this.drawTexturedModalRect(this.guiLeft+82, this.guiTop+17+52-k, 188, 52-k, 5, k+1 );
+            int k = (int)this.getHeatLeftScaled(51);
+            this.drawTexturedModalRect(this.guiLeft+82, this.guiTop+17+52-k, 188, 52-k-1, 5, k+1 );
         }
     }
 
     private float getHeatLeftScaled(int pixels){
-        return this.tile.getTemperature() * pixels/100;
+        return TE.getTemperature() * pixels/50;
+    }
+
+    private float getPressureLeftScaled(int pixels){
+        return TE.getPressure()/2000 * pixels;
     }
 
 }
