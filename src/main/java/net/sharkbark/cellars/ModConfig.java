@@ -3,7 +3,6 @@ package net.sharkbark.cellars;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ModConfig {
     public static boolean isDebugging;
@@ -25,6 +24,12 @@ public class ModConfig {
     public static int frozenMaxThreshold;
     public static int icyMaxThreshold;
 
+    public static int seaLevel;
+    public static float seaLevelPressure;
+    public static float workPerPower;
+    public static float heatPerPower;
+    public static float pressureChange;
+
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 
@@ -35,10 +40,8 @@ public class ModConfig {
                         "\nDebug: Will enable all debug text. Beware will spam console." +
                         "\nSpecial Ice Traits: Makes using sea ice and packed ice effect temperature of the cellar." +
                         "\nMonth Average Temperature: This will cause the temperature calculation to be based on the average temperature of the month. Instead of actual current temperature" +
-                        "\nTemperatureIceHouse: Is the minimum value the ice house can make it with out negative temperatures outside. Special Ice Traits do not take this into account.");
-
-
-
+                        "\nTemperatureIceHouse: Is the minimum value the ice house can make it with out negative temperatures outside. Special Ice Traits do not take this into account." +
+                        "\nDisableShards: Turning this value to true will change Ice Saw drops to ice blocks instead of shards.");
 
         isDebugging = config.get(Configuration.CATEGORY_GENERAL, "Debug", false).getBoolean(false);
         specialIceTraits = config.get(Configuration.CATEGORY_GENERAL, "SpecialIceTraits", false).getBoolean(false);
@@ -62,7 +65,6 @@ public class ModConfig {
         Property dryModProperty = config.get(Configuration.CATEGORY_GENERAL, "frozenMod", 250);
         dryModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserved Trait Modifier for Freeze Dryer");
         dryMod = (float) (0.001 * dryModProperty.getInt());
-
 
         Property packedIce = config.get(Configuration.CATEGORY_GENERAL, "packedIce", 60);
         packedIce.setComment("This setting dictates how much coolant you get from a block of Packed Ice or Packed Ice Shards in the Ice Bunker");
@@ -90,6 +92,25 @@ public class ModConfig {
         frozenMax.setComment("This is the temperature at which foods will go from icy to frozen");
         frozenMaxThreshold = frozenMax.getInt();
 
+        Property seaLevelProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevel", 64);
+        seaLevelProperty.setComment("This is the world sea level height.");
+        seaLevel = frozenMax.getInt();
+
+        Property seaLevelPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevelPressure", 1016);
+        seaLevelPressureProperty.setComment("This is the sea level pressure.");
+        seaLevelPressure = seaLevelPressureProperty.getInt();
+
+        Property workPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "workPerPower", 100);
+        workPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tWork per redstone power.");
+        workPerPower = (float) (0.001 * workPerPowerProperty.getInt());
+
+        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 1000);
+        heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power.");
+        heatPerPower = (float) (0.001 * heatPerPowerProperty.getInt());
+
+        Property pressureChangeProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 1980);
+        pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level.");
+        pressureChange = (float) (0.001 * pressureChangeProperty.getInt());
 
         config.save();
     }

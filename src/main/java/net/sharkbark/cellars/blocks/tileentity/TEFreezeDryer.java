@@ -8,19 +8,13 @@ import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.objects.inventory.capability.IItemHandlerSidedCallback;
 import net.dries007.tfc.objects.inventory.capability.ItemHandlerSidedWrapper;
 import net.dries007.tfc.objects.te.TEInventory;
-import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.climate.ClimateTFC;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -43,10 +37,13 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
     private float temperature = 1;
     private int lastUpdate;
     private int tick = 0;
+    private float pressure = ModConfig.seaLevelPressure;
+    private int powerLevel;
 
     public TEFreezeDryer() {
         super(new TEFreezeDryer.FreezeDryerItemStackHandler(9));
         temperature = ClimateTFC.getActualTemp(this.getPos());
+        pressure = pressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange);
     }
 
     @Override
@@ -54,53 +51,48 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         if((++tick)%20 != 0){
             return;
         }
+        tick = 0;
+        EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);
 
-        temperature = ClimateTFC.getActualTemp(this.getPos());
-        if(ModConfig.isDebugging) {
-            if(world.isBlockPowered(this.getPos())) {
-                System.out.println("Receiving power.");
-                EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);
-                if( EnumFacing.NORTH == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.7, this.pos.getY() + 0.6, this.pos.getZ() + 1, 0, 0.1, 0);
-                } else if( EnumFacing.EAST == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0, this.pos.getY() + 0.6, this.pos.getZ() + 0.7, 0, 0.1, 0);
-                } else if( EnumFacing.SOUTH == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.3,this.pos.getY() + 0.6,this.pos.getZ() + 0,0,0.1,0 );
-                } else if( EnumFacing.WEST == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 1,this.pos.getY() + 0.6,this.pos.getZ() + 0.3,0,0.1,0 );
-                }
-            } else {
-                System.out.println("Not receiving power.");
-            }
-        }
-
-        if(lastTick != world.isBlockPowered(this.getPos())){
-            //Decompress for a tick.
-
-            //Store tick
-            lastTick = world.isBlockPowered(this.getPos());
-            if(!world.isRemote) {
-                EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);;
-                if( EnumFacing.NORTH == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.7, this.pos.getY() + 0.6, this.pos.getZ() + 1, 0, 0.1, 0);
-                } else if( EnumFacing.EAST == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0, this.pos.getY() + 0.6, this.pos.getZ() + 0.7, 0, 0.1, 0);
-                } else if( EnumFacing.SOUTH == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.3,this.pos.getY() + 0.6,this.pos.getZ() + 0,0,0.1,0 );
-                } else if( EnumFacing.WEST == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 1,this.pos.getY() + 0.6,this.pos.getZ() + 0.3,0,0.1,0 );
-                }
+        if(world.isBlockPowered(this.getPos())){
+            if(EnumFacing.NORTH == facing) {
+                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.SOUTH), EnumFacing.SOUTH);
+            } else if(EnumFacing.EAST == facing) {
+                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.WEST), EnumFacing.WEST);
+            } else if(EnumFacing.SOUTH == facing) {
+                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.NORTH), EnumFacing.NORTH);
+            } else if(EnumFacing.WEST == facing) {
+                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.EAST), EnumFacing.EAST);
             }
         } else {
-            //Compressor paused
+            powerLevel = 0;
+        }
 
+        //increase motor temperature
+        temperature = temperature + (ModConfig.heatPerPower * powerLevel) + (ClimateTFC.getActualTemp(this.getPos()) - temperature);
+
+        // pressure is equal to 889.28 when Y = 0
+        if(world.isBlockPowered(this.getPos())) {
+            //decrease pressure
+            pressure = pressure - (powerLevel * ModConfig.workPerPower);
+
+            if (!world.isRemote) {
+                if (EnumFacing.NORTH == facing) {
+                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.7, this.pos.getY() + 0.6, this.pos.getZ() + 1, 0, 0.1, 0);
+                } else if (EnumFacing.EAST == facing) {
+                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0, this.pos.getY() + 0.6, this.pos.getZ() + 0.7, 0, 0.1, 0);
+                } else if (EnumFacing.SOUTH == facing) {
+                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.3, this.pos.getY() + 0.6, this.pos.getZ() + 0, 0, 0.1, 0);
+                } else if (EnumFacing.WEST == facing) {
+                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 1, this.pos.getY() + 0.6, this.pos.getZ() + 0.3, 0, 0.1, 0);
+                }
+            }
         }
     }
 
     private void handleItemTicking() {
         // Handle dryer ticks
     }
-
     private String getTrait(ItemStack stack, NBTTagCompound nbt){
         String string = nbt.getString("CellarAddonTemperature");
         if(string.compareTo("cool") == 0){
@@ -117,13 +109,11 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         }
         return "";
     }
-
     private void applyTrait(ItemStack stack, NBTTagCompound nbt, String string, FoodTrait trait){
         nbt.setString("CellarAddonTemperature", string);
         CapabilityFood.applyTrait(stack, trait);
         stack.setTagCompound(nbt);
     }
-
     private void updateTraits() {
         for (int x = 0; x < inventory.getSlots(); x++) {
             ItemStack stack = inventory.getStackInSlot(x);
@@ -148,8 +138,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
             */
         }
     }
-
-    public void updateShelf(float temp) {
+    public void updateDryer(float temp) {
         if(ModConfig.isDebugging) {
             System.out.println("Receiving temperature from master.");
         }
@@ -161,6 +150,9 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
     public float getTemperature() {
         return temperature;
+    }
+    public float getPressure() {
+        return pressure;
     }
 
     private void writeSyncData(NBTTagCompound tagCompound) {
