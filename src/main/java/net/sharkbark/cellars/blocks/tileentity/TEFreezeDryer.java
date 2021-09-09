@@ -35,23 +35,38 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
     boolean lastTick = false;
     private float temperature = 1;
-    private int lastUpdate;
+    private int lastUpdate = 0;
     private int tick = 0;
-    private float pressure = ModConfig.seaLevelPressure;
-    private int powerLevel;
+    private float pressure = 0;
+    private int powerLevel = 0;
+    private float coolant = 0;
+    private boolean initialized = false;
+    private float localTemperature = 0;
+    private float localPressure = 0;
+    private boolean overheating = false;
 
     public TEFreezeDryer() {
         super(new TEFreezeDryer.FreezeDryerItemStackHandler(9));
-        temperature = ClimateTFC.getActualTemp(this.getPos());
-        pressure = pressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange);
     }
+
+
 
     @Override
     public void update() {
-        if((++tick)%20 != 0){
+
+        if(!initialized){
+            localTemperature = ClimateTFC.getActualTemp(this.getPos());
+            temperature = localTemperature;
+            localPressure = ModConfig.seaLevelPressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange);
+            pressure = localPressure;
+            initialized = !initialized;
+        }
+        
+        if((++tick)%100 != 0){
             return;
         }
         tick = 0;
+
         EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);
 
         if(world.isBlockPowered(this.getPos())){
@@ -68,11 +83,23 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
             powerLevel = 0;
         }
 
-        //increase motor temperature
-        temperature = temperature + (ModConfig.heatPerPower * powerLevel) + (ClimateTFC.getActualTemp(this.getPos()) - temperature);
+        localTemperature = ClimateTFC.getActualTemp(this.getPos());
 
-        // pressure is equal to 889.28 when Y = 0
+        //Dissipate Heat
+        temperature = temperature + ModConfig.temperatureDissipation*(localTemperature - temperature);
+
         if(world.isBlockPowered(this.getPos())) {
+            //Increase heat
+            if(temperature < 50){
+                overheating = false;
+                temperature = temperature + (ModConfig.heatPerPower * powerLevel);
+
+            //"Explode"
+            } else {
+                overheating = true;
+                world.spawnParticle(EnumParticleTypes.CRIT, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 1, 1, 1);
+            }
+
             //decrease pressure
             pressure = pressure - (powerLevel * ModConfig.workPerPower);
 
@@ -89,6 +116,8 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
             }
         }
     }
+
+
 
     private void handleItemTicking() {
         // Handle dryer ticks
@@ -153,6 +182,17 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
     }
     public float getPressure() {
         return pressure;
+    }
+    public float getCoolant() {
+        return coolant;
+    }
+
+    public float getLocalPressure() {
+        return localPressure;
+    }
+
+    public float getLocalTemperature() {
+        return localTemperature;
     }
 
     private void writeSyncData(NBTTagCompound tagCompound) {

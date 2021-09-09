@@ -29,6 +29,7 @@ public class ModConfig {
     public static float workPerPower;
     public static float heatPerPower;
     public static float pressureChange;
+    public static float temperatureDissipation;
 
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -92,9 +93,9 @@ public class ModConfig {
         frozenMax.setComment("This is the temperature at which foods will go from icy to frozen");
         frozenMaxThreshold = frozenMax.getInt();
 
-        Property seaLevelProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevel", 64);
+        Property seaLevelProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevel", 143);
         seaLevelProperty.setComment("This is the world sea level height.");
-        seaLevel = frozenMax.getInt();
+        seaLevel = seaLevelProperty.getInt();
 
         Property seaLevelPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevelPressure", 1016);
         seaLevelPressureProperty.setComment("This is the sea level pressure.");
@@ -104,13 +105,17 @@ public class ModConfig {
         workPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tWork per redstone power.");
         workPerPower = (float) (0.001 * workPerPowerProperty.getInt());
 
-        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 1000);
+        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 100);
         heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power.");
         heatPerPower = (float) (0.001 * heatPerPowerProperty.getInt());
 
         Property pressureChangeProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 1980);
         pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level.");
         pressureChange = (float) (0.001 * pressureChangeProperty.getInt());
+
+        Property temperatureDissipationProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 20);
+        temperatureDissipationProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPercentage of change in heat dissipated.");
+        temperatureDissipation = (float) (0.01 * temperatureDissipationProperty.getInt());
 
         config.save();
     }

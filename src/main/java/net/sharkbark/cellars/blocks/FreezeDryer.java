@@ -45,6 +45,8 @@ public class FreezeDryer extends BlockContainer implements IHasModel {
         FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     }
 
+
+
     public FreezeDryer(String name, Material material) {
         super(Material.ROCK);
         setTranslationKey(name);
