@@ -54,24 +54,12 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
 
     @Override
     public void update() {
-        if (updateTickCounter % 100 == 0 || lastUpdate == 240){
-            if(ModConfig.isDebugging) {
-                System.out.println("I should update the my temperature: " + temperature);
-                System.out.println("My mod init is: " + Reference.initialized);
-                System.out.println("Am I remote?: " + world.isRemote);
-                System.out.println("Does master not love me?: " + lastUpdate);
-            }
-        }
-
         if(world.isRemote || Reference.initialized == false) {
             //System.out.println("I shouldn't update.");
             return;
         }
 
         if (updateTickCounter % 100 == 0 || lastUpdate == 240){
-            if(ModConfig.isDebugging) {
-                System.out.println("Updating!");
-            }
             handleItemTicking();
         }
         updateTickCounter++;
@@ -81,13 +69,6 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         }
         if(lastUpdate == -1 && temperature > -1000){
             temperature = -1000;
-        }
-
-        if(ModConfig.isDebugging) {
-            System.out.println("Hello world I am the server.");
-            System.out.println("Cool Modifier: " + Reference.COOL.getDecayModifier());
-            System.out.println("Icy Modifier: " + Reference.ICY.getDecayModifier());
-            System.out.println("Freezing Modifier: " + Reference.FREEZING.getDecayModifier());
         }
     }
 
@@ -102,9 +83,6 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
                 }
             }
             //Updates shelf contents.
-            if(ModConfig.isDebugging) {
-                System.out.println("Time to update traits!");
-            }
             updateTraits();
         } else {
             cellarTick++;
@@ -163,44 +141,25 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
 
             String string = getTrait(stack, nbt);
 
-            if(ModConfig.isDebugging) {
-                System.out.println("Temperature is for server: " + temperature);
-                System.out.println("NBT String is: " + string + "            ");
-            }
             if (temperature > ModConfig.coolMaxThreshold || temperature <= -1000) {
                 removeTrait(stack, nbt);
-                if(ModConfig.isDebugging) {
-                    System.out.println("Not trait");
-                }
             } else
             if ((temperature <= ModConfig.frozenMaxThreshold && temperature > -1000) && string.compareTo("freezing") != 0) {
                 removeTrait(stack, nbt);
                 applyTrait(stack, nbt, "freezing", Reference.FREEZING);
-                if(ModConfig.isDebugging) {
-                    System.out.println("Freezing");
-                }
             } else
             if ((temperature <= ModConfig.icyMaxThreshold && temperature > ModConfig.frozenMaxThreshold) && string.compareTo("icy") != 0) {
                 removeTrait(stack, nbt);
                 applyTrait(stack, nbt, "icy", Reference.ICY);
-                if(ModConfig.isDebugging) {
-                    System.out.println("Icy");
-                }
             } else
             if ((temperature <= ModConfig.coolMaxThreshold && temperature > ModConfig.icyMaxThreshold) && string.compareTo("cool") != 0) {
                 removeTrait(stack, nbt);
                 applyTrait(stack, nbt, "cool", Reference.COOL);
-                if(ModConfig.isDebugging) {
-                    System.out.println("Cool");
-                }
             }
         }
     }
 
     public void updateShelf(float temp) {
-        if(ModConfig.isDebugging) {
-            System.out.println("Receiving temperature from master.");
-        }
         cellarTick = 100;
         temperature = temp;
         lastUpdate = 240;
@@ -241,27 +200,13 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
     @Override
     public void onBreakBlock(World world, BlockPos pos, IBlockState state)
     {
-        if(ModConfig.isDebugging) {
-            System.out.println("Cool Modifier: " + Reference.COOL.getDecayModifier());
-            System.out.println("Icy Modifier: " + Reference.ICY.getDecayModifier());
-            System.out.println("Freezing Modifier: " + Reference.FREEZING.getDecayModifier());
-
-
-            System.out.println("BREAKING BLOCK !!!! DROPPING");
-        }
         for(int i = 0; i < 14; ++i) {
-            if(ModConfig.isDebugging) {
-                System.out.println("SLOT " + i);
-            }
             ItemStack stack = inventory.getStackInSlot(i);
             NBTTagCompound nbt;
             if(stack.hasTagCompound()){
                 nbt = stack.getTagCompound();
             }else{
                 nbt = new NBTTagCompound();
-            }
-            if(ModConfig.isDebugging) {
-                System.out.println("Stack is " + getTrait(stack, nbt));
             }
 
             removeTrait(stack, nbt);

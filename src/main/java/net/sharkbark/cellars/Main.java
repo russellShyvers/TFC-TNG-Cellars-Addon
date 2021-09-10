@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.sharkbark.cellars.proxy.CommonProxy;
 import net.sharkbark.cellars.util.CellarsTab;
 import net.sharkbark.cellars.util.Reference;
+import net.sharkbark.cellars.util.handlers.PacketHandler;
 import net.sharkbark.cellars.util.handlers.RegistryHandler;
 
 import java.awt.*;
@@ -39,6 +40,7 @@ public class Main {
         System.out.println("Mod Config for Cellars has Icy Mod as "+ModConfig.icyMod);
         System.out.println("Mod Config for Cellars has Frozen Mod as "+ModConfig.icleMod);
         System.out.println("Mod Config for Cellars has Freeze Dryed Mod as "+ModConfig.dryMod);
+        System.out.println("Mod Config for Cellars has Preserving Mod as "+ModConfig.preservingMod);
 
         RegistryHandler.initRegistries();
 
@@ -46,6 +48,7 @@ public class Main {
         Reference.ICY = new FoodTrait("sharkIcy", ModConfig.icyMod);
         Reference.FREEZING = new FoodTrait("sharkIcle", ModConfig.icleMod);
         Reference.DRY = new FoodTrait("sharkDry", ModConfig.dryMod);
+        Reference.PRESERVING = new FoodTrait("sharkPreserving", ModConfig.preservingMod);
 
         Map<String, FoodTrait> tmp = FoodTrait.getTraits();
         for (Map.Entry<String,FoodTrait> entry : tmp.entrySet())
@@ -60,6 +63,7 @@ public class Main {
     public void PostInit(FMLPostInitializationEvent event)
     {
         Reference.initialized = true;
+        PacketHandler.init();
     }
 
 }

@@ -24,12 +24,10 @@ public class ContainerFreezeDryer extends ContainerTE<TEFreezeDryer> {
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    if(ModConfig.isDebugging) {
-                        System.out.println("Adding slot x: "+ x +" y: " + y);
-                    }
                     addSlotToContainer(new SlotCallback(inventory, x+y*3, x*18+17, y*18+17, tile));
                 }
             }
+            addSlotToContainer(new SlotCallback(inventory, 9, 142, 17, tile));
         }
     }
 }

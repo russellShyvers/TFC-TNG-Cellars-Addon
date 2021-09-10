@@ -84,7 +84,6 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             player.sendMessage(new TextComponentString("Check console for more information"));
             player.sendMessage(new TextComponentString("The current error number is: " + error));
             player.sendMessage(new TextComponentString("Is the cellar complete: " + isComplete));
-            System.out.println("HELLO WORLD");
             //updateCellar(true);
             return;
         }
@@ -117,9 +116,6 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
                 updateCellar(true);
                 updateTickCounter = 0;
                 if(error != 0){
-                    if(ModConfig.isDebugging) {
-                        System.out.println("Telling my buddies to break down.");
-                    }
                     updateContainers();
                 }
             } else {
@@ -127,9 +123,6 @@ public class TEIceBunker extends TileEntityLockableLoot implements IInventory, I
             }
 
             if(error == 0) {
-                if(ModConfig.isDebugging) {
-                    System.out.println("Sending buddies an updated temperature.");
-                }
                 updateContainers();
             }
         }

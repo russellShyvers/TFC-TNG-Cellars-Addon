@@ -6,6 +6,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.sharkbark.cellars.ModConfig;
 import net.sharkbark.cellars.blocks.container.ContainerIceBunker;
 import net.sharkbark.cellars.blocks.tileentity.TEIceBunker;
 import net.sharkbark.cellars.util.Reference;
@@ -38,7 +39,6 @@ public class GuiIceBunker extends GuiContainer {
             List<String> infoText = new ArrayList<String>();
             float temperature = te.getTemperature();
             int coolant = te.getCoolant();
-            float coolantRate = te.getCoolantRate();
 
             if(temperature <= -1000) {
                 switch((int)(temperature * 0.001f)) {
@@ -59,7 +59,6 @@ public class GuiIceBunker extends GuiContainer {
                     infoText.add("Temperature: " + String.format("%.2f", temperature));
                 }
                 infoText.add("Coolant: " + coolant + " units");
-                //infoText.add("Coolant Consumption Rate: " + String.format("%.2f",coolantRate) + " per tick");
             }
 
             this.drawHoveringText(infoText, this.xSize-175, this.ySize-150, this.fontRenderer);

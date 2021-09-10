@@ -19,6 +19,7 @@ public class Reference {
     public static FoodTrait ICY;
     public static FoodTrait FREEZING;
     public static FoodTrait DRY;
+    public static FoodTrait PRESERVING;
 
     public static boolean initialized = false;
 }

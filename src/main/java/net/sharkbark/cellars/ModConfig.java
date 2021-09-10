@@ -12,6 +12,7 @@ public class ModConfig {
     public static float icyMod;
     public static float icleMod;
     public static float dryMod;
+    public static float preservingMod;
     public static boolean specialIceTraits;
     public static boolean tempMonthAvg;
     public static boolean disableShards;
@@ -23,13 +24,14 @@ public class ModConfig {
     public static int coolMaxThreshold;
     public static int frozenMaxThreshold;
     public static int icyMaxThreshold;
-
     public static int seaLevel;
     public static float seaLevelPressure;
     public static float workPerPower;
     public static float heatPerPower;
     public static float pressureChange;
     public static float temperatureDissipation;
+    public static float targetPressure;
+    public static int sealedDuration;
 
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -38,9 +40,9 @@ public class ModConfig {
 
         config.setCategoryComment(Configuration.CATEGORY_GENERAL,
                 "###BEWARE CHANGING TRAIT MODIFIERS CAN SPOIL FOOD STORED IN SHELVES###"+
-                        "\nDebug: Will enable all debug text. Beware will spam console." +
-                        "\nSpecial Ice Traits: Makes using sea ice and packed ice effect temperature of the cellar." +
-                        "\nMonth Average Temperature: This will cause the temperature calculation to be based on the average temperature of the month. Instead of actual current temperature" +
+                        "\nDebug: Will enable all debug text." +
+                        "\nSpecial Ice Traits: Makes using sea ice and packed ice effect temperature of the cellars." +
+                        "\nMonth Average Temperature: This will cause the temperature calculation, for cellars, to be based on the average temperature of the month. Instead of actual current temperature" +
                         "\nTemperatureIceHouse: Is the minimum value the ice house can make it with out negative temperatures outside. Special Ice Traits do not take this into account." +
                         "\nDisableShards: Turning this value to true will change Ice Saw drops to ice blocks instead of shards.");
 
@@ -66,6 +68,9 @@ public class ModConfig {
         Property dryModProperty = config.get(Configuration.CATEGORY_GENERAL, "frozenMod", 250);
         dryModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserved Trait Modifier for Freeze Dryer");
         dryMod = (float) (0.001 * dryModProperty.getInt());
+        Property preservingModProperty = config.get(Configuration.CATEGORY_GENERAL, "preservingMod", 110);
+        preservingModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserving Trait Modifier for Freeze Dryer when depressurizing and drying");
+        preservingMod = (float) (0.001 * preservingModProperty.getInt());
 
         Property packedIce = config.get(Configuration.CATEGORY_GENERAL, "packedIce", 60);
         packedIce.setComment("This setting dictates how much coolant you get from a block of Packed Ice or Packed Ice Shards in the Ice Bunker");
@@ -96,7 +101,6 @@ public class ModConfig {
         Property seaLevelProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevel", 143);
         seaLevelProperty.setComment("This is the world sea level height.");
         seaLevel = seaLevelProperty.getInt();
-
         Property seaLevelPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevelPressure", 1016);
         seaLevelPressureProperty.setComment("This is the sea level pressure.");
         seaLevelPressure = seaLevelPressureProperty.getInt();
@@ -104,8 +108,7 @@ public class ModConfig {
         Property workPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "workPerPower", 100);
         workPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tWork per redstone power.");
         workPerPower = (float) (0.001 * workPerPowerProperty.getInt());
-
-        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 100);
+        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 500);
         heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power.");
         heatPerPower = (float) (0.001 * heatPerPowerProperty.getInt());
 
@@ -113,9 +116,17 @@ public class ModConfig {
         pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level.");
         pressureChange = (float) (0.001 * pressureChangeProperty.getInt());
 
-        Property temperatureDissipationProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 20);
+        Property temperatureDissipationProperty = config.get(Configuration.CATEGORY_GENERAL, "temperatureDissipation", 20);
         temperatureDissipationProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPercentage of change in heat dissipated.");
         temperatureDissipation = (float) (0.01 * temperatureDissipationProperty.getInt());
+
+        Property sealedDurationProperty = config.get(Configuration.CATEGORY_GENERAL, "sealedDuration", 120);
+        sealedDurationProperty.setComment("Number of seconds at target pressure to preserve.");
+        sealedDuration = seaLevelPressureProperty.getInt();
+
+        Property targetPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "targetPressure", 600);
+        targetPressureProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tTarget pressure to achieve to start preserving.");
+        targetPressure = (float) (0.001 * workPerPowerProperty.getInt());
 
         config.save();
     }
