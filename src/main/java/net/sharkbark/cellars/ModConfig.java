@@ -32,6 +32,7 @@ public class ModConfig {
     public static float temperatureDissipation;
     public static float targetPressure;
     public static int sealedDuration;
+    public static int tickRate;
 
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -98,35 +99,39 @@ public class ModConfig {
         frozenMax.setComment("This is the temperature at which foods will go from icy to frozen");
         frozenMaxThreshold = frozenMax.getInt();
 
-        Property seaLevelProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevel", 143);
+        Property seaLevelProperty = config.get("Freeze Dryer", "seaLevel", 143);
         seaLevelProperty.setComment("This is the world sea level height.");
         seaLevel = seaLevelProperty.getInt();
-        Property seaLevelPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevelPressure", 1016);
+        Property seaLevelPressureProperty = config.get("Freeze Dryer", "seaLevelPressure", 1016);
         seaLevelPressureProperty.setComment("This is the sea level pressure.");
         seaLevelPressure = seaLevelPressureProperty.getInt();
 
-        Property workPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "workPerPower", 100);
+        Property workPerPowerProperty = config.get("Freeze Dryer", "workPerPower", 100);
         workPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tWork per redstone power.");
         workPerPower = (float) (0.001 * workPerPowerProperty.getInt());
-        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 500);
+        Property heatPerPowerProperty = config.get("Freeze Dryer", "heatPerPower", 500);
         heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power.");
         heatPerPower = (float) (0.001 * heatPerPowerProperty.getInt());
 
-        Property pressureChangeProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 1980);
+        Property pressureChangeProperty = config.get("Freeze Dryer", "pressureChange", 1980);
         pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level.");
         pressureChange = (float) (0.001 * pressureChangeProperty.getInt());
 
-        Property temperatureDissipationProperty = config.get(Configuration.CATEGORY_GENERAL, "temperatureDissipation", 20);
+        Property temperatureDissipationProperty = config.get("Freeze Dryer", "temperatureDissipation", 20);
         temperatureDissipationProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPercentage of change in heat dissipated.");
         temperatureDissipation = (float) (0.01 * temperatureDissipationProperty.getInt());
 
-        Property sealedDurationProperty = config.get(Configuration.CATEGORY_GENERAL, "sealedDuration", 120);
+        Property sealedDurationProperty = config.get("Freeze Dryer", "sealedDuration", 120);
         sealedDurationProperty.setComment("Number of seconds at target pressure to preserve.");
         sealedDuration = seaLevelPressureProperty.getInt();
 
-        Property targetPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "targetPressure", 600);
+        Property targetPressureProperty = config.get("Freeze Dryer", "targetPressure", 600);
         targetPressureProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tTarget pressure to achieve to start preserving.");
         targetPressure = (float) (0.001 * workPerPowerProperty.getInt());
+
+        Property tickRateProperty = config.get("Freeze Dryer", "tickRate", 10);
+        tickRateProperty.setComment("Number of pressure calculations per second.");
+        tickRate = tickRateProperty.getInt();
 
         config.save();
     }

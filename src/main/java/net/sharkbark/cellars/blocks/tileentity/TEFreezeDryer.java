@@ -42,7 +42,6 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
     private float localTemperature;
     private boolean overheating = false;
-    private int powerLevel;
     private int tick;
 
     private float temperature;
@@ -68,29 +67,69 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
     @Override
     public void update() {
+        //Slow machine ticking
         if((++tick)%20 != 0){
             return;
         }
+
+        //Reset tick count
         tick = 0;
 
-        EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);
-
-        if(world.isBlockPowered(this.getPos())){
-            if(EnumFacing.NORTH == facing) {
-                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.SOUTH), EnumFacing.SOUTH);
-            } else if(EnumFacing.EAST == facing) {
-                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.WEST), EnumFacing.WEST);
-            } else if(EnumFacing.SOUTH == facing) {
-                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.NORTH), EnumFacing.NORTH);
-            } else if(EnumFacing.WEST == facing) {
-                powerLevel = world.getRedstonePower(getPos().offset(EnumFacing.EAST), EnumFacing.EAST);
-            }
-        } else {
-            powerLevel = 0;
-        }
-
+        //Get current local temperature at block pos
         localTemperature = ClimateTFC.getActualTemp(this.getPos());
 
+        //Consume a piece of coolant
+        handleCoolant();
+
+        //Dissipate Heat
+        if(coolant > ModConfig.coolantConsumptionMultiplier * Math.abs(temperature - localTemperature) && pump) {
+            coolant = coolant - ModConfig.coolantConsumptionMultiplier * Math.abs(temperature - localTemperature);
+            temperature = temperature + ModConfig.temperatureDissipation * (localTemperature - temperature) - (ModConfig.temperatureDissipation * temperature);
+        } else {
+            temperature = temperature + ModConfig.temperatureDissipation * (localTemperature - temperature);
+        }
+
+        //Disabled till it cools back down
+        if(overheating){
+            overheatTick();
+        }
+
+        //Handle pumping action
+        if(world.isBlockPowered(this.getPos()) && !overheating && pump) {
+
+            //Increase heat
+            temperature = temperature + (ModConfig.heatPerPower * getPowerLevel());
+
+            //Decrease pressure
+            if(sealed && pressure > ModConfig.targetPressure) {
+                updatePressure(ModConfig.tickRate);
+            }
+
+            if(pressure < ModConfig.targetPressure){
+                pressure = ModConfig.targetPressure;
+            }
+
+            spawnParticles();
+        }
+
+        if(temperature >= 50){
+            overheating = true;
+        }
+
+        if (sealed && pressure <= ModConfig.targetPressure){
+            if(ticksSealed < ModConfig.sealedDuration){
+                ticksSealed+=1;
+            }
+        }
+
+        if (sealed) {
+            updateTraits();
+        }
+
+        this.markForSync();
+    }
+
+    private void handleCoolant() {
         if (!inventory.getStackInSlot(9).isEmpty()) {
             Item item = inventory.getStackInSlot(9).getItem();
             if ((item == ModItems.PACKED_ICE_SHARD || Block.getBlockFromItem(item) == Blocks.PACKED_ICE) && coolant < 10000 - ModConfig.packedIceCoolant) {
@@ -110,70 +149,61 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
                 inventory.extractItem(9, 1, false);
             }
         }
+    }
 
-        //Dissipate Heat
-        if(coolant > ModConfig.coolantConsumptionMultiplier * Math.abs(temperature - localTemperature) && pump) {
-            coolant = coolant - ModConfig.coolantConsumptionMultiplier * Math.abs(temperature - localTemperature);
-            temperature = temperature + ModConfig.temperatureDissipation * (localTemperature - temperature) - (ModConfig.temperatureDissipation * temperature);
+    private void overheatTick() {
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+        if(temperature == localTemperature) {
+            if((++overheatTick)%20 != 0){
+                return;
+            }
+            overheatTick = 0;
+            overheating = false;
+        }
+    }
+
+    void updatePressure(int i){
+        while(i<0) {
+            pressure = pressure - getPowerLevel() * (((ModConfig.workPerPower / 10) * (pressure / localPressure)) / ((localPressure + 1) - pressure));
+            i-=1;
+        }
+    }
+
+    public int getPowerLevel() {
+        EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);
+        if(world.isBlockPowered(this.getPos())){
+            if(EnumFacing.NORTH == facing) {
+                return world.getRedstonePower(getPos().offset(EnumFacing.SOUTH), EnumFacing.SOUTH);
+            } else if(EnumFacing.EAST == facing) {
+                return world.getRedstonePower(getPos().offset(EnumFacing.WEST), EnumFacing.WEST);
+            } else if(EnumFacing.SOUTH == facing) {
+                return world.getRedstonePower(getPos().offset(EnumFacing.NORTH), EnumFacing.NORTH);
+            } else if(EnumFacing.WEST == facing) {
+                return world.getRedstonePower(getPos().offset(EnumFacing.EAST), EnumFacing.EAST);
+            }
         } else {
-            temperature = temperature + ModConfig.temperatureDissipation * (localTemperature - temperature);
+            return 0;
         }
+        return 0;
+    }
 
-        //Disabled till it cools back down
-        if(overheating){
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
-            if(temperature == localTemperature) {
-                if((++overheatTick)%20 != 0){
-                    return;
-                }
-                overheatTick = 0;
-                overheating = false;
+    private void spawnParticles() {
+        EnumFacing facing = world.getBlockState(this.getPos()).getValue(FACING);
+        if (world.isRemote) {
+            if (EnumFacing.NORTH == facing) {
+                world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.7, this.pos.getY() + 0.6, this.pos.getZ() + 1, 0, 0.1, 0);
+            } else if (EnumFacing.EAST == facing) {
+                world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0, this.pos.getY() + 0.6, this.pos.getZ() + 0.7, 0, 0.1, 0);
+            } else if (EnumFacing.SOUTH == facing) {
+                world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.3, this.pos.getY() + 0.6, this.pos.getZ() + 0, 0, 0.1, 0);
+            } else if (EnumFacing.WEST == facing) {
+                world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 1, this.pos.getY() + 0.6, this.pos.getZ() + 0.3, 0, 0.1, 0);
             }
         }
-
-        if(world.isBlockPowered(this.getPos()) && !overheating && pump) {
-            //Increase heat
-            temperature = temperature + (ModConfig.heatPerPower * powerLevel);
-
-            //decrease pressure
-            if(sealed) {
-                pressure = pressure - powerLevel * (((ModConfig.workPerPower/10) * (pressure/localPressure)) / ((localPressure+1)-pressure));
-            }
-
-            if(pressure < ModConfig.targetPressure){
-                pressure = ModConfig.targetPressure;
-            }
-
-            if (world.isRemote) {
-                if (EnumFacing.NORTH == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.7, this.pos.getY() + 0.6, this.pos.getZ() + 1, 0, 0.1, 0);
-                } else if (EnumFacing.EAST == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0, this.pos.getY() + 0.6, this.pos.getZ() + 0.7, 0, 0.1, 0);
-                } else if (EnumFacing.SOUTH == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 0.3, this.pos.getY() + 0.6, this.pos.getZ() + 0, 0, 0.1, 0);
-                } else if (EnumFacing.WEST == facing) {
-                    world.spawnParticle(EnumParticleTypes.WATER_DROP, this.pos.getX() + 1, this.pos.getY() + 0.6, this.pos.getZ() + 0.3, 0, 0.1, 0);
-                }
-            }
-        }
-
-        if(temperature >= 50){
-            overheating = true;
-        }
-
-        if (sealed && pressure <= ModConfig.targetPressure){
-            ticksSealed++;
-        }
-
-        if (sealed) {
-            updateTraits();
-        }
-
-        this.markForSync();
     }
 
     private String getTrait(ItemStack stack, NBTTagCompound nbt){
@@ -260,7 +290,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         return sealed;
     }
     public int getPower() {
-        return powerLevel;
+        return getPowerLevel();
     }
     public Boolean getPump() {
         return pump;
@@ -273,6 +303,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
     public void unseal(){
         sealed = false;
+        pump = false;
         pressure = localPressure;
         this.markForSync();
     }
