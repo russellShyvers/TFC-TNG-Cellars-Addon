@@ -58,7 +58,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         super(new TEFreezeDryer.FreezeDryerItemStackHandler(10));
         localTemperature = ClimateTFC.getActualTemp(this.getPos());
         temperature = localTemperature;
-        localPressure = ModConfig.seaLevelPressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange);
+        localPressure = (ModConfig.seaLevelPressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange))/10;
         pressure = localPressure;
         sealed = false;
         pump = false;
@@ -121,7 +121,11 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
         //Disabled till it cools back down
         if(overheating){
-            world.spawnParticle(EnumParticleTypes.CRIT, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 1, 1, 1);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.pos.getX()+0.5, this.pos.getY()+0.5, this.pos.getZ()+0.5, 0, 1, 0);
             if(temperature == localTemperature) {
                 if((++overheatTick)%20 != 0){
                     return;
@@ -137,7 +141,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
             //decrease pressure
             if(sealed) {
-                pressure = pressure - powerLevel * (ModConfig.workPerPower * (1 - (localPressure - pressure) / localPressure));
+                pressure = pressure - powerLevel * (((ModConfig.workPerPower/10) * (pressure/localPressure)) / ((localPressure+1)-pressure));
             }
 
             if(pressure < ModConfig.targetPressure){
@@ -241,13 +245,13 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         return temperature;
     }
     public float getPressure() {
-        return pressure;
+        return pressure*10;
     }
     public float getCoolant() {
         return coolant;
     }
     public float getLocalPressure() {
-        return localPressure;
+        return localPressure*10;
     }
     public float getLocalTemperature() {
         return localTemperature;
