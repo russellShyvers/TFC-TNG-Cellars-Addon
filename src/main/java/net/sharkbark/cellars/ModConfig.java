@@ -33,6 +33,8 @@ public class ModConfig {
     public static float targetPressure;
     public static int sealedDuration;
     public static int tickRate;
+    public static float coolantMax;
+    public static int maxTemp;
 
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -127,11 +129,19 @@ public class ModConfig {
 
         Property targetPressureProperty = config.get("Freeze Dryer", "targetPressure", 600);
         targetPressureProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tTarget pressure to achieve to start preserving.");
-        targetPressure = (float) (0.001 * workPerPowerProperty.getInt());
+        targetPressure = (float) (0.001 * targetPressureProperty.getInt());
 
         Property tickRateProperty = config.get("Freeze Dryer", "tickRate", 10);
         tickRateProperty.setComment("Number of pressure calculations per second.");
         tickRate = tickRateProperty.getInt();
+
+        Property coolantMaxProperty = config.get("Freeze Dryer", "coolantMax", 10000);
+        coolantMaxProperty.setComment("Maximum amount of coolant freeze dryer can store internally.");
+        coolantMax = coolantMaxProperty.getInt();
+
+        Property maxTempProperty = config.get("Freeze Dryer", "tempMax", 50);
+        maxTempProperty.setComment("Maximum temperature of freeze dryer vacuum pump.");
+        maxTemp = maxTempProperty.getInt();
 
         config.save();
     }

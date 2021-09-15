@@ -7,6 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.sharkbark.cellars.ModConfig;
@@ -176,23 +177,23 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
     }
 
     private float getHeatLeftScaled(int pixels){
-        return Math.round(TE.getTemperature()) * pixels/50;
+        return Math.round(TE.getTemperature()) * pixels/ModConfig.maxTemp;
     }
 
     private float getPressureLeftScaled(int pixels){
-        return TE.getPressure()/1400 * pixels;
+        return TE.getPressure()/((256-ModConfig.seaLevel)*ModConfig.pressureChange+ModConfig.seaLevelPressure) * pixels;
     }
 
     private float getCoolentLeftScaled(int pixels){
-        return TE.getCoolant() * pixels/10000;
+        return TE.getCoolant() * pixels/ModConfig.coolantMax;
     }
 
     private float getLocalPressureScaled(int pixels){
-        return TE.getLocalPressure()/1400 * pixels;
+        return TE.getLocalPressure()/((256-ModConfig.seaLevel)*ModConfig.pressureChange+ModConfig.seaLevelPressure) * pixels;
     }
 
     private float getLocalTempatureScaled(int pixels){
-        return Math.round(TE.getLocalTemperature()) * pixels/50;
+        return Math.round(TE.getLocalTemperature()) * pixels/ModConfig.maxTemp;
     }
 
 }

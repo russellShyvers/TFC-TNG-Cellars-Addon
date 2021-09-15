@@ -57,7 +57,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         super(new TEFreezeDryer.FreezeDryerItemStackHandler(10));
         localTemperature = ClimateTFC.getActualTemp(this.getPos());
         temperature = localTemperature;
-        localPressure = (ModConfig.seaLevelPressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange))/10;
+        localPressure = (ModConfig.seaLevelPressure + ((-(this.getPos().getY()-ModConfig.seaLevel)) * ModConfig.pressureChange));
         pressure = localPressure;
         sealed = false;
         pump = false;
@@ -112,7 +112,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
             spawnParticles();
         }
 
-        if(temperature >= 50){
+        if(temperature >= ModConfig.maxTemp){
             overheating = true;
         }
 
@@ -132,19 +132,19 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
     private void handleCoolant() {
         if (!inventory.getStackInSlot(9).isEmpty()) {
             Item item = inventory.getStackInSlot(9).getItem();
-            if ((item == ModItems.PACKED_ICE_SHARD || Block.getBlockFromItem(item) == Blocks.PACKED_ICE) && coolant < 10000 - ModConfig.packedIceCoolant) {
+            if ((item == ModItems.PACKED_ICE_SHARD || Block.getBlockFromItem(item) == Blocks.PACKED_ICE) && coolant < ModConfig.coolantMax - ModConfig.packedIceCoolant) {
                 coolant = coolant + ModConfig.packedIceCoolant;
                 inventory.extractItem(9, 1, false);
-            } else if ((item == ModItems.SEA_ICE_SHARD || Block.getBlockFromItem(item) == BlocksTFC.SEA_ICE) && coolant < 10000 - ModConfig.seaIceCoolant) {
+            } else if ((item == ModItems.SEA_ICE_SHARD || Block.getBlockFromItem(item) == BlocksTFC.SEA_ICE) && coolant < ModConfig.coolantMax - ModConfig.seaIceCoolant) {
                 coolant = coolant + ModConfig.seaIceCoolant;
                 inventory.extractItem(9, 1, false);
-            } else if ((item == ModItems.ICE_SHARD || Block.getBlockFromItem(item) == Blocks.ICE) && coolant < 10000 - ModConfig.iceCoolant) {
+            } else if ((item == ModItems.ICE_SHARD || Block.getBlockFromItem(item) == Blocks.ICE) && coolant < ModConfig.coolantMax - ModConfig.iceCoolant) {
                 coolant = coolant + ModConfig.iceCoolant;
                 inventory.extractItem(9, 1, false);
-            } else if ((Block.getBlockFromItem(item) == Blocks.SNOW) && coolant < 10000 - ModConfig.snowCoolant) {
+            } else if ((Block.getBlockFromItem(item) == Blocks.SNOW) && coolant < ModConfig.coolantMax - ModConfig.snowCoolant) {
                 coolant = coolant + ModConfig.snowCoolant;
                 inventory.extractItem(9, 1, false);
-            }else if ((item == Items.SNOWBALL) && coolant < 10000 - ModConfig.snowBallCoolant) {
+            }else if ((item == Items.SNOWBALL) && coolant < ModConfig.coolantMax - ModConfig.snowBallCoolant) {
                 coolant = coolant + ModConfig.snowBallCoolant;
                 inventory.extractItem(9, 1, false);
             }
@@ -168,7 +168,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
     void updatePressure(int i){
         while(i<0) {
-            pressure = pressure - getPowerLevel() * (((ModConfig.workPerPower / 10) * (pressure / localPressure)) / ((localPressure + 1) - pressure));
+            pressure = pressure - ((ModConfig.workPerPower*getPowerLevel()*(pressure/localPressure)) / ((localPressure+1)-pressure));
             i-=1;
         }
     }
@@ -275,13 +275,13 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
         return temperature;
     }
     public float getPressure() {
-        return pressure*10;
+        return pressure;
     }
     public float getCoolant() {
         return coolant;
     }
     public float getLocalPressure() {
-        return localPressure*10;
+        return localPressure;
     }
     public float getLocalTemperature() {
         return localTemperature;
