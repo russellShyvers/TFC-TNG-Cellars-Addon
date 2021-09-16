@@ -119,7 +119,7 @@ public class TECellarShelf extends TEInventory implements IItemHandlerSidedCallb
         if(string.compareTo("freezing") == 0){
             CapabilityFood.removeTrait(stack, Reference.FREEZING);
         }
-        nbt.setString("CellarAddonTemperature","");
+        nbt.removeTag("CellarAddonTemperature");
         stack.setTagCompound(nbt);
     }
 

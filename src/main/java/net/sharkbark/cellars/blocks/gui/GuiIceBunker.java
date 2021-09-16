@@ -56,7 +56,7 @@ public class GuiIceBunker extends GuiContainer {
                 if(temperature < 0) {
                     infoText.add("Temperature: below zero");
                 } else {
-                    infoText.add("Temperature: " + String.format("%.2f", temperature));
+                    infoText.add("Temperature: " + String.format("%.2f", temperature) + "\u2103");
                 }
                 infoText.add("Coolant: " + coolant + " units");
             }

@@ -70,7 +70,7 @@ public class GuiCellarShelf extends GuiContainerTE<TECellarShelf> {
                 if(temperature < 0) {
                     infoText.add("Temperature: below zero");
                 } else {
-                    infoText.add("Temperature: " + String.format("%.2f", temperature));
+                    infoText.add("Temperature: " + String.format("%.2f", temperature) + "\u2103");
                 }
             }
 

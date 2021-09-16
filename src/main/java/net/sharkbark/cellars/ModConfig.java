@@ -101,45 +101,45 @@ public class ModConfig {
         frozenMax.setComment("This is the temperature at which foods will go from icy to frozen");
         frozenMaxThreshold = frozenMax.getInt();
 
-        Property seaLevelProperty = config.get("Freeze Dryer", "seaLevel", 143);
+        Property seaLevelProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevel", 143);
         seaLevelProperty.setComment("This is the world sea level height.");
         seaLevel = seaLevelProperty.getInt();
-        Property seaLevelPressureProperty = config.get("Freeze Dryer", "seaLevelPressure", 1016);
+        Property seaLevelPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "seaLevelPressure", 1016);
         seaLevelPressureProperty.setComment("This is the sea level pressure.");
         seaLevelPressure = seaLevelPressureProperty.getInt();
 
-        Property workPerPowerProperty = config.get("Freeze Dryer", "workPerPower", 100);
+        Property workPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "workPerPower", 1000);
         workPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tWork per redstone power.");
         workPerPower = (float) (0.001 * workPerPowerProperty.getInt());
-        Property heatPerPowerProperty = config.get("Freeze Dryer", "heatPerPower", 500);
+        Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 100);
         heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power.");
         heatPerPower = (float) (0.001 * heatPerPowerProperty.getInt());
 
-        Property pressureChangeProperty = config.get("Freeze Dryer", "pressureChange", 1980);
+        Property pressureChangeProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 1980);
         pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level.");
         pressureChange = (float) (0.001 * pressureChangeProperty.getInt());
 
-        Property temperatureDissipationProperty = config.get("Freeze Dryer", "temperatureDissipation", 20);
-        temperatureDissipationProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPercentage of change in heat dissipated.");
+        Property temperatureDissipationProperty = config.get(Configuration.CATEGORY_GENERAL, "temperatureDissipation", 20);
+        temperatureDissipationProperty.setComment("1000 is 10.0, 1230 is 12.3\t:\tPercentage of change in heat dissipated.");
         temperatureDissipation = (float) (0.01 * temperatureDissipationProperty.getInt());
 
-        Property sealedDurationProperty = config.get("Freeze Dryer", "sealedDuration", 120);
+        Property sealedDurationProperty = config.get(Configuration.CATEGORY_GENERAL, "sealedDuration", 120);
         sealedDurationProperty.setComment("Number of seconds at target pressure to preserve.");
-        sealedDuration = seaLevelPressureProperty.getInt();
+        sealedDuration = sealedDurationProperty.getInt();
 
-        Property targetPressureProperty = config.get("Freeze Dryer", "targetPressure", 600);
+        Property targetPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "targetPressure", 600);
         targetPressureProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tTarget pressure to achieve to start preserving.");
         targetPressure = (float) (0.001 * targetPressureProperty.getInt());
 
-        Property tickRateProperty = config.get("Freeze Dryer", "tickRate", 10);
+        Property tickRateProperty = config.get(Configuration.CATEGORY_GENERAL, "tickRate", 10);
         tickRateProperty.setComment("Number of pressure calculations per second.");
         tickRate = tickRateProperty.getInt();
 
-        Property coolantMaxProperty = config.get("Freeze Dryer", "coolantMax", 10000);
+        Property coolantMaxProperty = config.get(Configuration.CATEGORY_GENERAL, "coolantMax", 10000);
         coolantMaxProperty.setComment("Maximum amount of coolant freeze dryer can store internally.");
         coolantMax = coolantMaxProperty.getInt();
 
-        Property maxTempProperty = config.get("Freeze Dryer", "tempMax", 50);
+        Property maxTempProperty = config.get(Configuration.CATEGORY_GENERAL, "tempMax", 50);
         maxTempProperty.setComment("Maximum temperature of freeze dryer vacuum pump.");
         maxTemp = maxTempProperty.getInt();
 
