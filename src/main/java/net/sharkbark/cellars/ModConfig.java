@@ -32,7 +32,6 @@ public class ModConfig {
     public static float temperatureDissipation;
     public static float targetPressure;
     public static int sealedDuration;
-    public static int tickRate;
     public static float coolantMax;
     public static int maxTemp;
 
@@ -56,7 +55,7 @@ public class ModConfig {
         disableShards = config.get(Configuration.CATEGORY_GENERAL, "DisableShards", false).getBoolean(false);
 
         Property coolantConsumptionMultiplierProperty = config.get(Configuration.CATEGORY_GENERAL, "CoolantConsumptionMultiplier", 100);
-        coolantConsumptionMultiplierProperty.setComment("The multiplier 100 is 1.0, 123 is 1.23\t:\tIs used to effect the fuel consumption rate.");
+        coolantConsumptionMultiplierProperty.setComment("The multiplier 100 is 1.0, 123 is 1.23\t:\tIs used to effect the coolant consumption rate of the cellars");
         coolantConsumptionMultiplier = (float) (0.01 * coolantConsumptionMultiplierProperty.getInt());
 
         Property coolModProperty = config.get(Configuration.CATEGORY_GENERAL, "coolMod", 800);
@@ -72,23 +71,23 @@ public class ModConfig {
         dryModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserved Trait Modifier for Freeze Dryer");
         dryMod = (float) (0.001 * dryModProperty.getInt());
         Property preservingModProperty = config.get(Configuration.CATEGORY_GENERAL, "preservingMod", 110);
-        preservingModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserving Trait Modifier for Freeze Dryer when depressurizing and drying");
+        preservingModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserving Trait Modifier for Freeze Dryer when sealed");
         preservingMod = (float) (0.001 * preservingModProperty.getInt());
 
         Property packedIce = config.get(Configuration.CATEGORY_GENERAL, "packedIce", 60);
-        packedIce.setComment("This setting dictates how much coolant you get from a block of Packed Ice or Packed Ice Shards in the Ice Bunker");
+        packedIce.setComment("This setting dictates how much coolant you get from a block of Packed Ice or Packed Ice Shards");
         packedIceCoolant = packedIce.getInt();
         Property seaIce = config.get(Configuration.CATEGORY_GENERAL, "seaIce", 180);
-        seaIce.setComment("This setting dictates how much coolant you get from a block of Sea Ice or Sea Ice Shards in the Ice Bunker");
+        seaIce.setComment("This setting dictates how much coolant you get from a block of Sea Ice or Sea Ice Shards");
         seaIceCoolant = seaIce.getInt();
         Property ice = config.get(Configuration.CATEGORY_GENERAL, "ice", 120);
-        ice.setComment("This setting dictates how much coolant you get from a block of Ice or Ice Shards in the Ice Bunker");
+        ice.setComment("This setting dictates how much coolant you get from a block of Ice or Ice Shards");
         iceCoolant = ice.getInt();
         Property snow = config.get(Configuration.CATEGORY_GENERAL, "snow", 60);
-        snow.setComment("This setting dictates how much coolant you get from a block of Snow in the Ice Bunker");
+        snow.setComment("This setting dictates how much coolant you get from a block of Snow");
         snowCoolant = snow.getInt();
         Property snowBall = config.get(Configuration.CATEGORY_GENERAL, "snowball", 15);
-        snowBall.setComment("This setting dictates how much coolant you get from a block of Snowball in the Ice Bunker");
+        snowBall.setComment("This setting dictates how much coolant you get from a block of Snowball");
         snowBallCoolant = snowBall.getInt();
 
         Property coolMax = config.get(Configuration.CATEGORY_GENERAL, "coolTemperature", 20);
@@ -108,19 +107,19 @@ public class ModConfig {
         seaLevelPressureProperty.setComment("This is the sea level pressure.");
         seaLevelPressure = seaLevelPressureProperty.getInt();
 
-        Property workPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "workPerPower", 1000);
-        workPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tWork per redstone power.");
-        workPerPower = (float) (0.001 * workPerPowerProperty.getInt());
+        Property workPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "workPerPower", 100);
+        workPerPowerProperty.setComment("Work per redstone power level each second");
+        workPerPower = workPerPowerProperty.getInt();
         Property heatPerPowerProperty = config.get(Configuration.CATEGORY_GENERAL, "heatPerPower", 100);
-        heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power.");
+        heatPerPowerProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tHeat generated per redstone power level");
         heatPerPower = (float) (0.001 * heatPerPowerProperty.getInt());
 
         Property pressureChangeProperty = config.get(Configuration.CATEGORY_GENERAL, "pressureChange", 1980);
-        pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level.");
+        pressureChangeProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPressure change per Y level");
         pressureChange = (float) (0.001 * pressureChangeProperty.getInt());
 
         Property temperatureDissipationProperty = config.get(Configuration.CATEGORY_GENERAL, "temperatureDissipation", 20);
-        temperatureDissipationProperty.setComment("1000 is 10.0, 1230 is 12.3\t:\tPercentage of change in heat dissipated.");
+        temperatureDissipationProperty.setComment("1000 is 10.0, 1230 is 12.3\t:\tPercentage of Temperature Delta in heat dissipated per second");
         temperatureDissipation = (float) (0.01 * temperatureDissipationProperty.getInt());
 
         Property sealedDurationProperty = config.get(Configuration.CATEGORY_GENERAL, "sealedDuration", 120);
@@ -128,19 +127,15 @@ public class ModConfig {
         sealedDuration = sealedDurationProperty.getInt();
 
         Property targetPressureProperty = config.get(Configuration.CATEGORY_GENERAL, "targetPressure", 600);
-        targetPressureProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tTarget pressure to achieve to start preserving.");
+        targetPressureProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tTarget pressure to achieve to start preserving");
         targetPressure = (float) (0.001 * targetPressureProperty.getInt());
 
-        Property tickRateProperty = config.get(Configuration.CATEGORY_GENERAL, "tickRate", 10);
-        tickRateProperty.setComment("Number of pressure calculations per second.");
-        tickRate = tickRateProperty.getInt();
-
-        Property coolantMaxProperty = config.get(Configuration.CATEGORY_GENERAL, "coolantMax", 10000);
-        coolantMaxProperty.setComment("Maximum amount of coolant freeze dryer can store internally.");
+        Property coolantMaxProperty = config.get(Configuration.CATEGORY_GENERAL, "coolantMax", 6400);
+        coolantMaxProperty.setComment("Maximum amount of coolant freeze dryer can store internally");
         coolantMax = coolantMaxProperty.getInt();
 
-        Property maxTempProperty = config.get(Configuration.CATEGORY_GENERAL, "tempMax", 50);
-        maxTempProperty.setComment("Maximum temperature of freeze dryer vacuum pump.");
+        Property maxTempProperty = config.get(Configuration.CATEGORY_GENERAL, "tempMax", 40);
+        maxTempProperty.setComment("Maximum temperature of freeze dryer vacuum pump");
         maxTemp = maxTempProperty.getInt();
 
         config.save();

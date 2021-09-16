@@ -117,7 +117,7 @@ public class TEFreezeDryer extends TEInventory implements IItemHandlerSidedCallb
 
             //Decrease pressure
             if(sealed) {
-                pressure = pressure - (getPowerLevel()*ModConfig.workPerPower*ModConfig.tickRate*pressure)/Math.pow(localPressure,2);
+                pressure = pressure - (getPowerLevel()*ModConfig.workPerPower*pressure)/Math.pow(localPressure,2);
             }
 
             if(pressure < ModConfig.targetPressure){

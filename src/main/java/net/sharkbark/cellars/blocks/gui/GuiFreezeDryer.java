@@ -114,7 +114,6 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
                 infoText.add("Dissipation: " + ModConfig.temperatureDissipation);
                 infoText.add("Temperature Max: " + ModConfig.maxTemp + "\u2103");
                 infoText.add("Coolant Max: " + ModConfig.coolantMax);
-                infoText.add("Tick Rate: " + ModConfig.tickRate);
                 infoText.add("Initialized: " + TE.initialized);
             } else {
                 infoText.add("---Info---");
