@@ -3,17 +3,35 @@
 
   "pattern":
   [
-    "RRR",
-    "RRR",
-    "R R"
+    "SGS",
+    "DLD",
+    "SPS"
   ],
 
   "key":
   {
-    "R":
+    "S":
     {
       "type": "forge:ore_dict",
-      "ore": "lumber"
+      "ore": "sheetSteel"
+    },
+    "D":
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G":
+    {
+      "type": "forge:ore_dict",
+      "ore": "paneGlass"
+    },
+    "L":
+    {
+      "item": "minecraft:ladder"
+    },
+    "P":
+    {
+      "item": "minecraft:piston"
     }
   },
 

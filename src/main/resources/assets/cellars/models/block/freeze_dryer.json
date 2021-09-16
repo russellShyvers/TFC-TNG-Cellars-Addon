@@ -6,6 +6,8 @@
 		"1": "minecraft:blocks/redstone_block",
 		"2": "minecraft:blocks/iron_block",
 		"3": "minecraft:blocks/glass",
+		"4": "minecraft:blocks/piston_bottom",
+		"5": "tfc:blocks/trapdoor/steel",
 		"particle": "cellars:blocks/cellar_wall"
 	},
 	"elements": [
@@ -134,12 +136,12 @@
 			"to": [10, 6, 16],
 			"color": 4,
 			"faces": {
-				"north": {"uv": [6, 10, 10, 12], "texture": "#missing"},
-				"east": {"uv": [0, 10, 1, 12], "texture": "#missing"},
-				"south": {"uv": [6, 10, 10, 12], "texture": "#missing"},
-				"west": {"uv": [15, 10, 16, 12], "texture": "#missing"},
-				"up": {"uv": [6, 15, 10, 16], "texture": "#missing"},
-				"down": {"uv": [6, 0, 10, 1], "texture": "#missing"}
+				"north": {"uv": [6, 10, 10, 12], "texture": "#4"},
+				"east": {"uv": [0, 10, 1, 12], "texture": "#4"},
+				"south": {"uv": [6, 10, 10, 12], "texture": "#4"},
+				"west": {"uv": [15, 10, 16, 12], "texture": "#4"},
+				"up": {"uv": [6, 15, 10, 16], "texture": "#4"},
+				"down": {"uv": [6, 0, 10, 1], "texture": "#4"}
 			}
 		},
 		{
@@ -147,12 +149,12 @@
 			"to": [11, 7, 16],
 			"color": 7,
 			"faces": {
-				"north": {"uv": [5, 9, 6, 11], "texture": "#missing"},
-				"east": {"uv": [0, 9, 1, 11], "texture": "#missing"},
-				"south": {"uv": [10, 9, 11, 11], "texture": "#missing"},
-				"west": {"uv": [15, 9, 16, 11], "texture": "#missing"},
-				"up": {"uv": [10, 15, 11, 16], "texture": "#missing"},
-				"down": {"uv": [10, 0, 11, 1], "texture": "#missing"}
+				"north": {"uv": [5, 9, 6, 11], "texture": "#5"},
+				"east": {"uv": [0, 9, 1, 11], "texture": "#5"},
+				"south": {"uv": [10, 9, 11, 11], "texture": "#5"},
+				"west": {"uv": [15, 9, 16, 11], "texture": "#5"},
+				"up": {"uv": [10, 15, 11, 16], "texture": "#5"},
+				"down": {"uv": [10, 0, 11, 1], "texture": "#5"}
 			}
 		},
 		{
