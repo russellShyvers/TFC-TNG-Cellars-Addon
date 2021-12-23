@@ -1,0 +1,22 @@
+{
+  "name": "First Cellar",
+  "icon": "cellars:textures/items/cellar_door.png",
+  "category": "getting_started",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "In Vanilla, you might expect to start by punching a tree. Not in TFC! Scattered all over the ground are rocks and sticks. You will need both. Pick them up by $(4)right-clicking $(). $(br2)Once you have at least two rocks, hold them in your hand. $(4)Right-clicking$() will open the $(thing)knapping interface. $(4)Left-click$() to chip bits of rock off to make an axe and some knives."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cellars:cellarDoor",
+      "recipe2": "cellars:cellarShelf"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cellars:cellarWall",
+      "recipe2": "cellars:iceBunker"
+    }
+  ]
+}

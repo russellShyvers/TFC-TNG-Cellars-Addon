@@ -1,4 +1,5 @@
 item.cellar_door.name=Cellar Door
+item.infected_air.name=Cellar Air
 item.bismuth_bronze_ice_saw_head.name=Bismuth Bronze Ice Saw Blade
 item.black_bronze_ice_saw_head.name=Black Bronze Ice Saw Blade
 item.black_steel_ice_saw_head.name=Black Steel Ice Saw Blade
@@ -25,6 +26,7 @@ tile.cellar_shelf.name=Cellar Shelf
 tile.freeze_dryer.name=Freeze Dryer
 tile.ice_bunker.name=Ice Bunker
 tile.cellar_door.name=Cellar Door
+tile.infected_air.name=Cellar Air
 
 container.ice_bunker=Ice Bunker
 container.cellar_shelf=Cellar Shelf
@@ -32,6 +34,7 @@ container.cellar_shelf=Freeze Dryer
 
 block.cellar_door.name=Cellar Door
 block.cellar_wall.name=Cellar Wall
+block.infected_air.name=Cellar Air
 
 itemGroup.cellars=TFC Cellars
 
@@ -40,3 +43,6 @@ tfc.food_traits.sharkIcy=Icy
 tfc.food_traits.sharkIcle=Frozen
 tfc.food_traits.sharkPreserving=Preserving
 tfc.food_traits.sharkDry=Freeze Dryed
+
+cellars.main.root.title=Cellars 101
+cellars.patchouli.landing_text=A guide for TFC-TNG: Cellars Addon $(br2) $(l)$(4)******Warning****** $(br) Many TFC-TNG: Cellars values are change-able in the config.

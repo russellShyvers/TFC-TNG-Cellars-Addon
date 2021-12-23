@@ -1,0 +1,12 @@
+{
+  "name": "Cellar Traits",
+  "icon": "minecraft:beef",
+  "category": "reference",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "With-in this addon 5 preservation modifications were added to help extend the life expectancy. They are as follows (by default): $(br2)Cool: $(4)80% Decay Rate$() $(br)Icy: $(4)50% Decay Rate$() $(br)Frozen: $(4)25% Decay Rate$() $(br)Freeze Dryed: $(4)10% Decay Rate$() $(br)Preserving: $(4)90% Decay Rate$()"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Clay Knapping",
+  "icon": "cellars:textures/blocks/ice_bunker.png",
+  "category": "reference",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Cellar is one of the more complex mechanics of $(thing)TFC-TNG:Celllars Addon$(), which will grow and be refined as time goes on as it is the core mechanic of this addon mod. In the following pages I will cover how the cellar is to be constructed. $(br2)$(4)Note: Two doors are not required but recommended."
+    },
+    {
+      "type": "text",
+      "title": "Mechanic",
+      "text": "Cellar logic proceeds as follows. First the ice bunker will check whether it is a valid structure ever so often as to keep the scanning down. Next it will do thermal calculations and coolant consumption. Then notifying all shelves contained within the cellar what temperature to treat the food with."
+    },
+    {
+      "type": "link",
+      "text": "To start of the cellar you need to set aside an area from a 3x4x(3-4) to a 9x4x(9-10). The internal space of a cellar can only be 3 blocks out in any direction from where the $(thing)ice bunker$() was placed and the internal vertical space will always be 2. Below is a link to a visual representation of what was said here.",
+      "url": "https://i.imgur.com/TYdmjHR.png",
+      "link_text": "Cellar Dimensions"
+    },
+    {
+      "type": "text",
+      "text": "Once the $(thing)ice bunker$() no longer is complaining about issues, next comes the internal contents of the cellars. Cellars currently will only support a few light sources, and cellar shelves as there is not supposed to be anything inside other then food."
+    }
+  ]
+}

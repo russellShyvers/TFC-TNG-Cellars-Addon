@@ -45,7 +45,8 @@ public class GuiHandler implements IGuiHandler {
             return new GuiCellarShelf(container ,entityPlayer.inventory, te, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
         }
         if(ID == Reference.GUI_ICE_BUNKER){
-            return new GuiIceBunker(entityPlayer.inventory, (TEIceBunker)world.getTileEntity(new BlockPos(x,y,z)), entityPlayer);
+            TEIceBunker te = (TEIceBunker)world.getTileEntity(new BlockPos(x,y,z));
+            return new GuiIceBunker(container ,entityPlayer.inventory, te, world.getBlockState(new BlockPos(x, y, z)).getBlock().getTranslationKey());
         }
 
         if(ID == Reference.GUI_FREEZE_DRYER){

@@ -84,8 +84,8 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
             }
         }
 
+        List<String> infoText = new ArrayList<String>();
         if(mouseX >= guiLeft + 5 && mouseX <= guiLeft + 15 && mouseY >= guiTop + 5 && mouseY <= guiTop + 15) {
-            List<String> infoText = new ArrayList<String>();
 
             if(ModConfig.isDebugging){
                 infoText.add("---Debug---");
@@ -127,9 +127,93 @@ public class GuiFreezeDryer extends GuiContainerTE<TEFreezeDryer> {
                 infoText.add("Power Level: " + TE.getPower());
             }
 
-            this.drawHoveringText(infoText, this.xSize-175, this.ySize-150, this.fontRenderer);
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
         }
 
+        // Freeze Drier Seal
+        if(mouseX >= guiLeft + 62 && mouseX <= guiLeft + 78 && mouseY >= guiTop + 17 && mouseY <= guiTop + 33) {
+
+            if(TE.getSeal()) {
+                infoText.add("Unseal Chamber");
+            }else{
+                infoText.add("Seal Chamber");
+            }
+
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
+        }
+
+        // Freeze Drier Snow Flake
+        if( (mouseX >= guiLeft + 73 && mouseX <= guiLeft + 103 && mouseY >= guiTop + 36 && mouseY <= guiTop + 50)
+                ||(mouseX >= guiLeft + 80 && mouseX <= guiLeft + 96 && mouseY >= guiTop + 28 && mouseY <= guiTop + 58) ) {
+
+            if(ModConfig.isDebugging){
+                infoText.add("Progress: " + String.format("%d",TE.getSealedFor()) + "%");
+                infoText.add("Ticks Vacuum Sealed: " + String.format("%.2f",TE.getSealedTicks()) + " ticks");
+            } else {
+                infoText.add("Progress: " + String.format("%d",TE.getSealedFor()) + "%");
+            }
+
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
+        }
+
+        // Seal
+        if(mouseX >= guiLeft + 125 && mouseX <= guiLeft + 129 && mouseY >= guiTop + 18 && mouseY <= guiTop + 69) {
+
+            if(ModConfig.isDebugging){
+                infoText.add("Vacuum: " + String.format("%.5f",TE.getPressure()));
+                infoText.add("External Pressure: " + String.format("%.5f",TE.getLocalPressure()));
+            } else {
+                infoText.add("Vacuum: " +  String.format("%.2f",TE.getPressure()));
+                infoText.add("External Pressure: " + String.format("%.2f",TE.getLocalPressure()));
+            }
+
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
+        }
+
+        // Heat
+        if(mouseX >= guiLeft + 133 && mouseX <= guiLeft + 137 && mouseY >= guiTop + 18 && mouseY <= guiTop + 69) {
+
+            if(ModConfig.isDebugging){
+                infoText.add("Heat: " + String.format("%.5f",TE.getTemperature()) + "\u2103");
+                infoText.add("External Temperature: " + String.format("%.5f",TE.getLocalTemperature()) + "\u2103");
+            } else {
+                infoText.add("Heat: " +  String.format("%.2f",TE.getTemperature()) + "\u2103");
+                infoText.add("External Temperature: " + String.format("%.2f",TE.getLocalTemperature()) + "\u2103");
+            }
+
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
+        }
+
+        // Pump Power
+        if(mouseX >= guiLeft + 141 && mouseX <= guiLeft + 158 && mouseY >= guiTop + 53 && mouseY <= guiTop + 70) {
+
+            if(TE.getPump()) {
+                infoText.add("Stop Pump");
+            }else{
+                infoText.add("Start Pump");
+            }
+
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
+        }
+
+        // Coolant
+        if(mouseX >= guiLeft + 163 && mouseX <= guiLeft + 167 && mouseY >= guiTop + 18 && mouseY <= guiTop + 69) {
+
+            if(ModConfig.isDebugging){
+                infoText.add("Coolant: " + String.format("%.5f",TE.getCoolant()));
+            } else {
+                infoText.add("Coolant: " +  String.format("%.1f",(TE.getCoolant()/ModConfig.coolantMax))+ "%");
+            }
+
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
+            return;
+        }
 
     }
 

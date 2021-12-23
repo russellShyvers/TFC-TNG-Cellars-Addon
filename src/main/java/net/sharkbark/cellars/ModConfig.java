@@ -70,7 +70,7 @@ public class ModConfig {
         Property dryModProperty = config.get(Configuration.CATEGORY_GENERAL, "dryMod", 100);
         dryModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserved Trait Modifier for Freeze Dryer");
         dryMod = (float) (0.001 * dryModProperty.getInt());
-        Property preservingModProperty = config.get(Configuration.CATEGORY_GENERAL, "preservingMod", 110);
+        Property preservingModProperty = config.get(Configuration.CATEGORY_GENERAL, "preservingMod", 900);
         preservingModProperty.setComment("1000 is 1.00, 1230 is 1.23\t:\tPreserving Trait Modifier for Freeze Dryer when sealed");
         preservingMod = (float) (0.001 * preservingModProperty.getInt());
 

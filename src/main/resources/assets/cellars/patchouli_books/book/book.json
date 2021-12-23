@@ -1,0 +1,13 @@
+{
+  "name": "cellars.main.root.title",
+  "landing_text": "cellars.patchouli.landing_text",
+  "version": 1,
+  "advancement_namespaces": ["cellars"],
+  "filler_texture": "cellars:textures/gui/page_filler.png",
+  "book_texture": "patchouli:textures/gui/book_brown.png",
+  "creative_tab": "cellars",
+  "model": "cellars:book",
+  "macros": {
+    "$(2br)": "$(br2)"
+  }
+}

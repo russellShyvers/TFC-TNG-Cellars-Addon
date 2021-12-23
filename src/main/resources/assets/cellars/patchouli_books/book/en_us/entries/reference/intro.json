@@ -1,0 +1,20 @@
+{
+  "name": "Bugs/Issues",
+  "icon": "cellars:textures/bug.png",
+  "category": "reference",
+  "sortnum": -1,
+  "pages": [
+    {
+      "type": "link",
+      "url": "https://github.com/SharkeyMyrl/TFC-TNG-Cellars-Addon/issues",
+      "link_text": "GitHub Issues",
+      "text": "If you encounter any issues/bugs please report the bug(s)."
+    },
+    {
+      "type": "link",
+      "url": "https://discord.com/invite/zgqxBFN",
+      "link_text": "TFC-TNG Discord",
+      "text": "You may also reach out to me via TFC-TNG's official discord, in the $(thing)#tng-addons$() channel."
+    }
+  ]
+}

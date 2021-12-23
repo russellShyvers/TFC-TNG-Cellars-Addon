@@ -20,4 +20,6 @@ public class ModBlocks {
     public static final Block ICE_BUNKER = new BlockIceBunker("ice_bunker", Material.ROCK);
 
     public static final Block FREEZE_DRYER = new FreezeDryer("freeze_dryer", Material.ROCK);
+
+    public static final Block CELLAR_AIR = new InfectedAir("infected_air", Material.AIR);
 }

@@ -1,30 +1,32 @@
 package net.sharkbark.cellars.blocks.gui;
 
+import net.dries007.tfc.client.gui.GuiContainerTE;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.sharkbark.cellars.ModConfig;
 import net.sharkbark.cellars.blocks.container.ContainerIceBunker;
+import net.sharkbark.cellars.blocks.tileentity.TECellarShelf;
 import net.sharkbark.cellars.blocks.tileentity.TEIceBunker;
 import net.sharkbark.cellars.util.Reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiIceBunker extends GuiContainer {
+public class GuiIceBunker extends GuiContainerTE<TEIceBunker> {
 
     private static final ResourceLocation GUI_BUNKER = new ResourceLocation(Reference.MOD_ID + ":textures/gui/ice_bunker.png");
     private final InventoryPlayer playerInventory;
     private final TEIceBunker te;
 
-    public GuiIceBunker(InventoryPlayer playerInventory, TEIceBunker chestInventory, EntityPlayer player){
-        super(new ContainerIceBunker(playerInventory, chestInventory, player));
-        this.playerInventory = playerInventory;
-        this.te = chestInventory;
-        chestInventory.getCellarInfo(player);
+    public GuiIceBunker(Container container, InventoryPlayer playerInv, TEIceBunker tile, String translationKey){
+        super(container, playerInv, tile, GUI_BUNKER);
+        this.playerInventory = playerInv;
+        this.te = tile;
         this.xSize = 176;
         this.ySize = 166;
     }
@@ -61,7 +63,7 @@ public class GuiIceBunker extends GuiContainer {
                 infoText.add("Coolant: " + coolant + " units");
             }
 
-            this.drawHoveringText(infoText, this.xSize-175, this.ySize-150, this.fontRenderer);
+            this.drawHoveringText(infoText, mouseX-guiLeft, mouseY-guiTop);
         }
     }
 

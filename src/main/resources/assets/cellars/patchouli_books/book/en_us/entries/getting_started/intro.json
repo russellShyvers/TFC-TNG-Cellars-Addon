@@ -1,0 +1,27 @@
+{
+  "name": "Getting Started",
+  "icon": "cellars:textures/items/book.png",
+  "category": "getting_started",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "text": "To begin with TFC TNG: Cellars Addon the primary materials required are lumber of any kind, which requires a saw. As well the access to $(thing)clay$() as $(thing)clay$() and thatch are used to make the thermal insolator used in the cellars contruction. For assistance finding $(thing)clay$() refer to the TFC TNG page on finding $(thing)clay$()."
+    },
+    {
+      "type": "spotlight",
+      "item": "minecraft:clay_ball",
+      "text": "$(thing)Clay$() is common and found in deposits on the surface alongside dirt in biomes with green, as is not patchy, grass (rainfall value of 500 or more). It's appearance is that of a dirt block with gray stripes blended in. Grass grows on $(thing)clay$() deposits hiding them and causing them to blend in with the dirt around them."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:wood/lumber/oak",
+      "text": "$(thing)Lumber$() is crafted with a $(thing)Log$() and a $(thing)Saw$()."
+    },
+    {
+      "type": "spotlight",
+      "item": "tfc:straw",
+      "text": "$(thing)Straw$() can be obtained by breaking tall grass found throughout the world with a Knife or a Scythe. Each block of tall grass broken will yield a single piece of $(thing)straw$(). $(thing)straw$() is also produced as a byproduct when refining Grains."
+    }
+  ]
+}

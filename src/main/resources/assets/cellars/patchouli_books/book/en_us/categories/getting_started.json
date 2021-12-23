@@ -1,0 +1,6 @@
+{
+  "name": "Getting Started",
+  "description": "Simple start to TFC-TNG: Cellars Addon, refer to reference pages for more information.",
+  "icon": "tfc:textures/items/stonetypes/rock/granite.png",
+  "sortnum": 0
+}

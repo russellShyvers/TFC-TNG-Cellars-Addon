@@ -1,0 +1,20 @@
+{
+  "name": "Freeze Dryer",
+  "icon": "cellars:textures/blocks/cellar_wall.png",
+  "category": "reference",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The Freeze Dryer allows for the user to permanently extend the life span of foods. So in order to balance when this technology is access-able, a redstone signal is required to power the dryers pump. $(br2) This redstone signal is also utilized to control how hard the dryer works every tick it pumps, a strength of 15 means it will work at full tilt."
+    },
+    {
+      "type": "text",
+      "text": "The strength will also control how much heat it generates each tick it is pumping. $(br2)Inside the user interface there is a hover area of information on power level and the likes. There are also two buttons which need to be toggled in order to start the machine, the first that must be pushed will seal the chamber. After which point the food contained inside will gain a small lifespan boost while sealed."
+    },
+    {
+      "type": "text",
+      "text": "When ready and a signal is present by pressing the pumps button you will start the vacuum pulling process, it is important to note this process takes time, as it much reach a much lower pressure, so doing more food at once is advised. $(br2)At any time you can hover your mouse over the three bars and snow flake to see their values, individually."
+    }
+  ]
+}
