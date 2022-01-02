@@ -34,6 +34,7 @@ public class ModConfig {
     public static int sealedDuration;
     public static float coolantMax;
     public static int maxTemp;
+    public static boolean firstJoinBook;
 
     public static void loadConfig(FMLPreInitializationEvent event) {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -53,6 +54,7 @@ public class ModConfig {
         tempMonthAvg = config.get(Configuration.CATEGORY_GENERAL, "MonthAvgTemp", false).getBoolean(false);
         iceHouseTemperature = config.get(Configuration.CATEGORY_GENERAL, "TemperatureIceHouse", 1).getInt(1);
         disableShards = config.get(Configuration.CATEGORY_GENERAL, "DisableShards", false).getBoolean(false);
+        firstJoinBook = config.get(Configuration.CATEGORY_GENERAL, "FirstJoinBook", true).getBoolean(false);
 
         Property coolantConsumptionMultiplierProperty = config.get(Configuration.CATEGORY_GENERAL, "CoolantConsumptionMultiplier", 100);
         coolantConsumptionMultiplierProperty.setComment("The multiplier 100 is 1.0, 123 is 1.23\t:\tIs used to effect the coolant consumption rate of the cellars");

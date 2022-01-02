@@ -6,7 +6,7 @@ public class Reference {
 
     static public final String MOD_ID = "cellars";
     static public final String NAME = "Cellars Addon";
-    static public final String VERSION = "1.24.0";
+    static public final String VERSION = "1.24.1";
     static public final String ACCEPTED_VERSIONS = "[1.12.2]";
     static public final String CLIENT_PROXY_CLASS = "net.sharkbark.cellars.proxy.ClientProxy";
     static public final String COMMON_PROXY_CLASS = "net.sharkbark.cellars.proxy.CommonProxy";
