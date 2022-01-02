@@ -133,11 +133,15 @@ public class Main {
 
             if (!persistent.hasKey("CellarsFirstJoin")) {
                 persistent.setBoolean("CellarsFirstJoin", true);
-                NBTTagCompound bookData = new NBTTagCompound();
-                bookData.setString("patchouli:book", "cellars:book");
-                ItemStack book = new ItemStack(PatchouliItems.book);
-                book.setTagCompound(bookData);
-                ItemHandlerHelper.giveItemToPlayer((EntityPlayer) event.getEntity(), book);
+                try {
+                    NBTTagCompound bookData = new NBTTagCompound();
+                    bookData.setString("patchouli:book", "cellars:book");
+                    ItemStack book = new ItemStack(PatchouliItems.book);
+                    book.setTagCompound(bookData);
+                    ItemHandlerHelper.giveItemToPlayer((EntityPlayer) event.getEntity(), book);
+                }catch (NoClassDefFoundError e){
+                    System.out.println("Mod failed to give Patchouli Book to" + event.getEntity());
+                }
             }
         }
     }
